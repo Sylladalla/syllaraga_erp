@@ -1,0 +1,282 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Passer la commande - Syllaraga</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet"
+    >
+
+</head>
+
+<body>
+
+<nav
+    class="navbar navbar-dark"
+    style="background-color:#008C95;"
+>
+
+    <div class="container">
+
+        <a
+            class="navbar-brand fw-bold"
+            href="/"
+        >
+
+            <i class="bi bi-shop"></i>
+
+            SYLLARAGA
+
+        </a>
+
+        <a
+            href="/panier/"
+            class="btn btn-light btn-sm"
+        >
+
+            <i class="bi bi-cart3"></i>
+
+            Retour au panier
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body p-4">
+
+                    <h2 class="mb-4">
+
+                        <i class="bi bi-bag-check"></i>
+
+                        Passer la commande
+
+                    </h2>
+
+
+                    <p class="text-muted">
+
+                        Veuillez renseigner vos informations
+                        pour recevoir votre commande.
+
+                    </p>
+
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div
+                                class="alert alert-danger"
+                                role="alert"
+                            >
+
+                                <i class="bi bi-exclamation-circle"></i>
+
+                                {{ message }}
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Nom
+                            </label>
+
+                            <input
+                                type="text"
+                                name="nom"
+                                class="form-control"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Prénom
+                            </label>
+
+                            <input
+                                type="text"
+                                name="prenom"
+                                class="form-control"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Téléphone
+                            </label>
+
+                            <input
+                                type="tel"
+                                name="telephone"
+                                class="form-control"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                E-mail
+                            </label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-control"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+                                Adresse de livraison
+                            </label>
+
+                            <textarea
+                                name="adresse"
+                                class="form-control"
+                                rows="4"
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label
+                                for="zone"
+                                class="form-label"
+                            >
+
+                                Zone de livraison
+
+                            </label>
+
+                            <select
+                                name="zone"
+                                id="zone"
+                                class="form-select"
+                                required
+                            >
+
+                                <option value="">
+                                    -- Choisir une zone --
+                                </option>
+
+                                {% for zone in zones %}
+
+                                    <option value="{{ zone.id }}">
+
+                                        {{ zone.nom }}
+                                        — {{ zone.frais }} FCFA
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                            <div class="form-text">
+
+                                Les frais de livraison dépendent
+                                de la zone choisie.
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-lg w-100 text-white"
+                            style="background-color:#008C95;"
+                        >
+
+                            <i class="bi bi-check-circle"></i>
+
+                            Confirmer la commande
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer
+    class="text-white text-center py-4"
+    style="background-color:#008C95;"
+>
+
+    <p class="mb-0">
+
+        © 2026 Syllaraga —
+        Bio pour bien manger 🌿
+
+    </p>
+
+</footer>
+
+</body>
+
+</html>

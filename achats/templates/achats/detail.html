@@ -1,0 +1,203 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}
+Détail de l'achat
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">
+                📦 Détail de l'achat N°{{ achat.id }}
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                <strong>Fournisseur :</strong>
+                {{ achat.fournisseur.nom }}
+            </p>
+
+            <p>
+                <strong>Date d'achat :</strong>
+                {{ achat.date_achat|date:"d/m/Y H:i" }}
+            </p>
+
+            <p>
+                <strong>Statut :</strong>
+
+                {% if achat.statut == "BROUILLON" %}
+                    <span class="badge bg-secondary">Brouillon</span>
+               
+   
+{% elif achat.statut == "ENVOYE" %}
+    <span class="badge bg-info text-dark">
+        Envoyé au fournisseur
+    </span>
+
+
+                {% elif achat.statut == "COMMANDE" %}
+                    <span class="badge bg-primary">Commande validée</span>
+                {% elif achat.statut == "RECEPTIONNE" %}
+                    <span class="badge bg-success">Réceptionné</span>
+                {% elif achat.statut == "ANNULE" %}
+                    <span class="badge bg-danger">Annulé</span>
+                {% endif %}
+            </p>
+
+            <hr>
+
+            <h5 class="mb-3">Produits de la commande</h5>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-success">
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Prix unitaire</th>
+                            <th>Date de péremption</th>
+                            <th>Sous-total</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for ligne in achat.lignes.all %}
+                        <tr>
+                            <td>{{ ligne.produit.nom }}</td>
+                            <td>{{ ligne.quantite }}</td>
+                            <td>{{ ligne.prix_unitaire }} FCFA</td>
+                            <td>
+                                {% if ligne.date_peremption %}
+                                    {{ ligne.date_peremption|date:"d/m/Y" }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ ligne.quantite|floatformat:0 }} ×
+                                {{ ligne.prix_unitaire }} FCFA
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">
+                                Aucune ligne d'achat.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+            <h4 class="text-end mt-3">
+                Montant total :
+                <span class="text-success">
+                    {{ achat.montant_total }} FCFA
+                </span>
+            </h4>
+
+            <hr>
+
+            <div class="d-flex flex-wrap gap-2">
+
+                {% if achat.statut == "BROUILLON" %}
+
+                    {% if achat.lignes.exists %}
+                    <form method="post"
+                          action="{% url 'envoyer_achat' achat.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">
+                            📧 Envoyer au fournisseur
+                        </button>
+                    </form>
+                    {% else %}
+                    <div class="alert alert-warning mb-0">
+                        Ajoutez au moins un produit avant d'envoyer
+                        la commande au fournisseur.
+                    </div>
+                    {% endif %}
+
+               
+
+
+{% elif achat.statut == "ENVOYE" %}
+
+    <a href="{% url 'modifier_achat' achat.id %}"
+       class="btn btn-warning">
+        ✏️ Modifier la réponse du fournisseur
+    </a>
+
+    <form method="POST"
+          action="{% url 'valider_commande' achat.id %}"
+          onsubmit="return confirm('Confirmer la validation de cette commande fournisseur ?');">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">
+            ✅ Valider la commande
+        </button>
+    </form>
+
+    <div class="alert alert-info mb-0">
+        ⏳ Demande envoyée au fournisseur. Vérifie les prix et les quantités avant de valider.
+    </div>
+
+
+
+                {% elif achat.statut == "COMMANDE" %}
+
+                    <a href="{% url 'receptionner_achat' achat.id %}"
+                       class="btn btn-success">
+                        📦 Confirmer la réception
+                    </a>
+
+{% elif achat.statut == "RECEPTIONNE" %}
+
+    <span class="badge bg-success fs-6 p-2">
+        ✅ Achat déjà réceptionné
+    </span>
+
+    <a href="{% url 'paiement_fournisseur' achat.id %}"
+       class="btn btn-warning">
+        💰 Payer le fournisseur
+    </a>
+
+
+                {% elif achat.statut == "ANNULE" %}
+
+                    <span class="badge bg-danger fs-6 p-2">
+                        ❌ Achat annulé
+                    </span>
+
+                {% endif %}
+
+                <a href="{% url 'liste_achats' %}"
+                   class="btn btn-secondary">
+                    ← Retour à la liste
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

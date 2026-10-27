@@ -1,0 +1,489 @@
+
+/* =========================================================
+   SYLLARAGA ERP
+   DESIGN GLOBAL
+   ========================================================= */
+
+   html,
+   body {
+       margin: 0;
+       padding: 0;
+       min-height: 100%;
+       background: #f4f7f6;
+       font-family: "Segoe UI", Arial, sans-serif;
+       color: #263238;
+   }
+   
+   
+   /* =========================================================
+      NAVBAR
+      ========================================================= */
+   
+   .navbar-syllaraga {
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 60px;
+   
+       background: linear-gradient(
+           135deg,
+           #008c95,
+           #007f68
+       );
+   
+       z-index: 1100;
+   
+       box-shadow:
+           0 2px 12px rgba(0, 0, 0, 0.12);
+   }
+   
+   
+   /* Logo */
+   
+   .navbar-syllaraga .navbar-brand {
+       font-size: 18px;
+       letter-spacing: 0.5px;
+       display: flex;
+       align-items: center;
+       gap: 9px;
+   }
+   
+   
+   /* Icône logo */
+   
+   .navbar-syllaraga .navbar-brand i {
+       font-size: 22px;
+   }
+   
+   
+   /* utilisateur */
+   
+   .navbar-syllaraga .d-flex > span {
+       font-size: 14px;
+       font-weight: 500;
+   }
+   
+   
+   /* bouton déconnexion */
+   
+   .navbar-syllaraga .btn-light {
+       border: none;
+       border-radius: 8px;
+   
+       padding: 7px 13px;
+   
+       font-weight: 600;
+   
+       transition: all 0.2s ease;
+   }
+   
+   .navbar-syllaraga .btn-light:hover {
+       transform: translateY(-1px);
+   
+       box-shadow:
+           0 4px 10px rgba(0, 0, 0, 0.15);
+   }
+   
+   
+   /* =========================================================
+      STRUCTURE
+      ========================================================= */
+   
+   .erp-layout {
+       min-height: 100vh;
+   }
+   
+   
+   /* =========================================================
+      SIDEBAR
+      ========================================================= */
+   
+   .sidebar-syllaraga {
+   
+       position: fixed;
+   
+       top: 60px;
+       left: 0;
+   
+       width: 235px;
+   
+       height: calc(100vh - 60px);
+   
+       background: linear-gradient(
+           180deg,
+           #247d57,
+           #176b4a
+       );
+   
+       padding: 22px 12px;
+   
+       overflow-y: auto;
+   
+       z-index: 1000;
+   
+       box-sizing: border-box;
+   
+       box-shadow:
+           3px 0 12px rgba(0, 0, 0, 0.08);
+   }
+   
+   
+   /* =========================================================
+      MENU SIDEBAR
+      ========================================================= */
+   
+   .sidebar-syllaraga ul {
+       padding: 0;
+       margin: 0;
+   }
+   
+   
+   /* chaque lien */
+   
+   .sidebar-syllaraga .nav-link {
+   
+       color: rgba(255, 255, 255, 0.92);
+   
+       padding: 11px 14px;
+   
+       margin-bottom: 6px;
+   
+       border-radius: 10px;
+   
+       display: flex;
+   
+       align-items: center;
+   
+       gap: 12px;
+   
+       font-size: 14px;
+   
+       font-weight: 500;
+   
+       transition:
+           background-color 0.2s ease,
+           transform 0.2s ease,
+           color 0.2s ease;
+   }
+   
+   
+   /* icônes */
+   
+   .sidebar-syllaraga .nav-link i {
+   
+       width: 22px;
+   
+       text-align: center;
+   
+       font-size: 17px;
+   }
+   
+   
+   /* hover */
+   
+   .sidebar-syllaraga .nav-link:hover {
+   
+       background: rgba(255, 255, 255, 0.14);
+   
+       color: white;
+   
+       transform: translateX(3px);
+   
+       text-decoration: none;
+   }
+   
+   
+   /* lien actif */
+   
+   .sidebar-syllaraga .nav-link.active {
+   
+       background: rgba(255, 255, 255, 0.20);
+   
+       color: white;
+   
+       font-weight: 600;
+   
+       box-shadow:
+           inset 3px 0 0 #ffffff;
+   }
+   
+   
+   /* =========================================================
+      CONTENU PRINCIPAL
+      ========================================================= */
+   
+   .main-content {
+   
+       margin-left: 235px;
+   
+       padding:
+           85px
+           30px
+           35px
+           30px;
+   
+       min-height: 100vh;
+   
+       box-sizing: border-box;
+   }
+   
+   
+   /* =========================================================
+      TITRES
+      ========================================================= */
+   
+   .main-content h1,
+   .main-content h2,
+   .main-content h3 {
+   
+       color: #174d3b;
+   
+       font-weight: 700;
+   }
+   
+   
+   /* =========================================================
+      CARTES
+      ========================================================= */
+   
+   .card {
+   
+       border: none;
+   
+       border-radius: 14px;
+   
+       background: #ffffff;
+   
+       box-shadow:
+           0 4px 18px rgba(35, 70, 55, 0.08);
+   
+       transition:
+           transform 0.2s ease,
+           box-shadow 0.2s ease;
+   }
+   
+   
+   /* effet léger uniquement sur les cartes */
+   
+   .card:hover {
+   
+       box-shadow:
+           0 7px 22px rgba(35, 70, 55, 0.12);
+   }
+   
+   
+   /* ancienne classe personnalisée */
+   
+   .card-syllaraga {
+   
+       background: #ffffff;
+   
+       border-radius: 15px;
+   
+       box-shadow:
+           0 4px 18px rgba(35, 70, 55, 0.08);
+   }
+   
+   
+   /* =========================================================
+      TABLEAUX
+      ========================================================= */
+   
+   .table {
+   
+       margin-bottom: 0;
+   
+       vertical-align: middle;
+   }
+   
+   
+   .table thead th {
+   
+       font-size: 13px;
+   
+       font-weight: 700;
+   
+       color: #31584a;
+   
+       white-space: nowrap;
+   }
+   
+   
+   .table tbody td {
+   
+       font-size: 14px;
+   }
+   
+   
+   .table-hover tbody tr {
+   
+       transition:
+           background-color 0.15s ease;
+   }
+   
+   
+   .table-hover tbody tr:hover {
+   
+       background-color: #f1f8f5;
+   }
+   
+   
+   /* =========================================================
+      BADGES
+      ========================================================= */
+   
+   .badge {
+   
+       border-radius: 7px;
+   
+       padding: 6px 9px;
+   
+       font-weight: 600;
+   }
+   
+   
+   /* =========================================================
+      BOUTONS
+      ========================================================= */
+   
+   .btn {
+   
+       border-radius: 8px;
+   
+       font-weight: 600;
+   
+       transition:
+           transform 0.15s ease,
+           box-shadow 0.15s ease;
+   }
+   
+   
+   .btn:hover {
+   
+       transform: translateY(-1px);
+   }
+   
+   
+   /* bouton principal */
+   
+   .btn-success {
+   
+       background-color: #2e8b57;
+   
+       border-color: #2e8b57;
+   }
+   
+   
+   .btn-success:hover {
+   
+       background-color: #24764a;
+   
+       border-color: #24764a;
+   }
+   
+   
+   /* =========================================================
+      FORMULAIRES
+      ========================================================= */
+   
+   .form-control,
+   .form-select {
+   
+       border-radius: 9px;
+   
+       border: 1px solid #d7e2dd;
+   
+       padding: 9px 12px;
+   }
+   
+   
+   .form-control:focus,
+   .form-select:focus {
+   
+       border-color: #2e8b57;
+   
+       box-shadow:
+           0 0 0 0.2rem rgba(46, 139, 87, 0.12);
+   }
+   
+   
+   /* =========================================================
+      ALERTES
+      ========================================================= */
+   
+   .alert {
+   
+       border: none;
+   
+       border-radius: 10px;
+   
+       box-shadow:
+           0 3px 10px rgba(0, 0, 0, 0.05);
+   }
+   
+   
+   /* =========================================================
+      BARRE DE DÉFILEMENT SIDEBAR
+      ========================================================= */
+   
+   .sidebar-syllaraga::-webkit-scrollbar {
+   
+       width: 5px;
+   }
+   
+   
+   .sidebar-syllaraga::-webkit-scrollbar-thumb {
+   
+       background: rgba(255, 255, 255, 0.25);
+   
+       border-radius: 10px;
+   }
+   
+   
+   /* =========================================================
+      RESPONSIVE
+      ========================================================= */
+   
+   @media (max-width: 767px) {
+   
+       .navbar-syllaraga {
+   
+           height: 56px;
+       }
+   
+   
+       .sidebar-syllaraga {
+   
+           top: 56px;
+   
+           width: 190px;
+   
+           height: calc(100vh - 56px);
+       }
+   
+   
+       .main-content {
+   
+           margin-left: 190px;
+   
+           padding:
+               75px
+               15px
+               25px
+               15px;
+       }
+   
+   
+       .navbar-syllaraga .navbar-brand {
+   
+           font-size: 15px;
+       }
+   
+   
+       .navbar-syllaraga .d-flex > span {
+   
+           display: none;
+       }
+   
+   }

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class="container mt-4">
+
+
+<div class="card shadow">
+
+
+<div class="card-body text-center">
+
+
+<h3>
+⚠️ Supprimer la catégorie ?
+</h3>
+
+
+<p>
+
+Voulez-vous supprimer :
+
+<strong>
+{{ categorie.nom }}
+</strong>
+
+?
+
+</p>
+
+
+
+<form method="POST">
+
+{% csrf_token %}
+
+
+<button class="btn btn-danger">
+
+🗑️ Supprimer
+
+</button>
+
+
+<a href="{% url 'liste_categories' %}"
+class="btn btn-secondary">
+
+Annuler
+
+</a>
+
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+{% endblock %}

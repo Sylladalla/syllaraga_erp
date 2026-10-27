@@ -1,0 +1,175 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}
+    {% if mode_modification %}
+        Modifier la réponse du fournisseur
+    {% else %}
+        Ajouter un achat
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4 mb-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">
+                {% if mode_modification %}
+                    ✏️ Modifier la réponse du fournisseur — Achat N°{{ achat.id }}
+                {% else %}
+                    ➕ Ajouter un achat
+                {% endif %}
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {{ formset.management_form }}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                {% if formset.non_form_errors %}
+                    <div class="alert alert-danger">
+                        {{ formset.non_form_errors }}
+                    </div>
+                {% endif %}
+
+                <!-- FOURNISSEUR -->
+                <div class="mb-3">
+                    <label class="form-label">Fournisseur</label>
+
+                    {{ form.fournisseur }}
+
+                    {% for error in form.fournisseur.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+
+                    {% if not mode_modification %}
+                        <a href="{% url 'ajouter_fournisseur' %}"
+                           class="btn btn-sm btn-success mt-2">
+                            + Nouveau fournisseur
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- STATUT -->
+                <div class="mb-3">
+                    <label class="form-label">Statut</label>
+
+                    {{ form.statut }}
+
+                    {% for error in form.statut.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <hr>
+
+                <h5 class="mb-3">🛒 Produits achetés</h5>
+
+                {% for ligne_form in formset %}
+
+                    <div class="card mb-3 p-3 bg-light">
+
+                        {{ ligne_form.id }}
+
+                        {% for hidden in ligne_form.hidden_fields %}
+                            {% if hidden.name != "id" %}
+                                {{ hidden }}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if ligne_form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ ligne_form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="row g-3">
+
+                            <div class="col-md-3">
+                                <label class="form-label">Produit</label>
+                                {{ ligne_form.produit }}
+
+                                {% for error in ligne_form.produit.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label">Quantité</label>
+                                {{ ligne_form.quantite }}
+
+                                {% for error in ligne_form.quantite.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Prix unitaire (FCFA)</label>
+                                {{ ligne_form.prix_unitaire }}
+
+                                {% for error in ligne_form.prix_unitaire.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Date de péremption</label>
+                                {{ ligne_form.date_peremption }}
+
+                                {% for error in ligne_form.date_peremption.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            {% if ligne_form.DELETE %}
+                                <div class="col-md-1">
+                                    <label class="form-label">Supprimer</label>
+                                    {{ ligne_form.DELETE }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                {% empty %}
+                    <div class="alert alert-warning">
+                        Aucune ligne de produit disponible.
+                    </div>
+                {% endfor %}
+
+                <hr>
+
+                <!-- BOUTONS -->
+                <div class="d-flex flex-wrap gap-2">
+
+                    <button type="submit" class="btn btn-success">
+                        💾 Enregistrer
+                    </button>
+
+                    <a href="{% if mode_modification %}{% url 'detail_achat' achat.id %}{% else %}{% url 'liste_achats' %}{% endif %}"
+                       class="btn btn-secondary">
+                        Annuler
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

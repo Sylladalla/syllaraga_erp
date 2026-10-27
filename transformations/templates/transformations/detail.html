@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %}
+Détail de la transformation
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+        <h3 class="mb-0">
+            🔄 Détail de la transformation
+        </h3>
+
+        <a href="{% url 'liste_transformations' %}"
+           class="btn btn-light">
+            ← Retour
+        </a>
+
+    </div>
+
+    <div class="card-body">
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+
+        <!-- ========================= -->
+        <!-- INFORMATIONS GENERALES -->
+        <!-- ========================= -->
+
+        <h5 class="mb-3">
+            🧃 Produit final
+        </h5>
+
+        <div class="row mb-4">
+
+            <div class="col-md-6">
+                <strong>Produit :</strong>
+                {{ transformation.produit.nom }}
+            </div>
+
+            <div class="col-md-6">
+                <strong>Quantité produite :</strong>
+                {{ transformation.quantite_produite }}
+                {{ transformation.produit.unite_mesure }}
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <strong>Date de transformation :</strong>
+                {{ transformation.date_transformation|date:"d/m/Y H:i" }}
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <strong>Date de péremption :</strong>
+
+                {% if transformation.date_peremption %}
+                    {{ transformation.date_peremption|date:"d/m/Y" }}
+                {% else %}
+                    <span class="text-muted">
+                        Non définie
+                    </span>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <hr>
+
+
+        <!-- ========================= -->
+        <!-- STATUT -->
+        <!-- ========================= -->
+
+        <h5 class="mb-3">
+            📌 Statut
+        </h5>
+
+        {% if transformation.statut == "TERMINEE" %}
+
+            <span class="badge bg-success fs-6">
+                ✅ Terminée
+            </span>
+
+        {% elif transformation.statut == "ANNULEE" %}
+
+            <span class="badge bg-danger fs-6">
+                ❌ Annulée
+            </span>
+
+        {% else %}
+
+            <span class="badge bg-warning text-dark fs-6">
+                🟡 Brouillon
+            </span>
+
+        {% endif %}
+
+
+        <hr>
+
+
+        <!-- ========================= -->
+        <!-- INGREDIENTS -->
+        <!-- ========================= -->
+
+        <h5 class="mb-3">
+            🥭 Matières / ingrédients utilisés
+        </h5>
+
+        {% if transformation.lignes.exists %}
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-light">
+
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité utilisée</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for ligne in transformation.lignes.all %}
+
+                            <tr>
+
+                                <td>
+                                    {{ ligne.produit.nom }}
+                                </td>
+
+                                <td>
+                                    {{ ligne.quantite_utilisee }}
+                                    {{ ligne.produit.unite_mesure }}
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <p class="text-muted">
+                Aucun ingrédient enregistré.
+            </p>
+
+        {% endif %}
+
+
+        <hr>
+<!-- ========================= -->
+<!-- COUT DE LA TRANSFORMATION -->
+<!-- ========================= -->
+
+<h5 class="mb-3">
+    💰 Coût de la transformation
+</h5>
+
+<div class="row mb-4">
+
+    <div class="col-md-6">
+        <strong>Coût total :</strong>
+        {{ transformation.cout_total }} F
+    </div>
+
+    <div class="col-md-6">
+        <strong>Coût unitaire :</strong>
+        {{ transformation.cout_unitaire }} F
+    </div>
+
+</div>
+
+<hr>
+
+        <!-- ========================= -->
+        <!-- ACTIONS -->
+        <!-- ========================= -->
+
+        <div class="mt-4">
+
+            {% if transformation.statut == "BROUILLON" %}
+
+                <a href="{% url 'terminer_transformation' transformation.id %}"
+                   class="btn btn-success"
+                   onclick="return confirm('Voulez-vous vraiment terminer cette transformation ?');">
+                    ✅ Terminer la transformation
+                </a>
+
+                <a href="{% url 'annuler_transformation' transformation.id %}"
+                   class="btn btn-danger"
+                   onclick="return confirm('Voulez-vous vraiment annuler cette transformation ?');">
+                    ❌ Annuler
+                </a>
+
+            {% elif transformation.statut == "TERMINEE" %}
+
+                <span class="text-success">
+                    ✅ Cette transformation est terminée.
+                </span>
+
+            {% elif transformation.statut == "ANNULEE" %}
+
+                <span class="text-danger">
+                    ❌ Cette transformation est annulée.
+                </span>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

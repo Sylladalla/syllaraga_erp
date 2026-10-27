@@ -1,0 +1,77 @@
+
+
+{% extends "base_boutique.html" %}
+
+{% block title %}Créer mon compte | Syllaraga{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="text-center mb-4">
+                <h1 class="fw-bold">🌿 Syllaraga</h1>
+                <p class="text-muted">
+                    Rejoignez notre boutique et retrouvez vos commandes facilement.
+                </p>
+            </div>
+
+            <div class="card border-0 shadow rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <h2 class="h4 text-center mb-2">Créer mon compte</h2>
+                    <p class="text-muted text-center mb-4">
+                        Quelques informations pour commencer.
+                    </p>
+
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags|default:'info' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
+                    <form method="post" action="{% url 'inscription_client' %}">
+                        {% csrf_token %}
+
+                        {{ form.non_field_errors }}
+
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold"
+                                       for="{{ field.id_for_label }}">
+                                    {{ field.label }}
+                                </label>
+
+                                {{ field }}
+
+                                {% for error in field.errors %}
+                                    <div class="text-danger small">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        <button type="submit"
+                                class="btn btn-success w-100 py-2">
+                            Créer mon compte
+                        </button>
+                    </form>
+
+                    <hr>
+
+                    <p class="text-center mb-0">
+                        Déjà inscrit ?
+                        <a href="{% url 'connexion_client' %}"
+                           class="fw-semibold">
+                            Se connecter
+                        </a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

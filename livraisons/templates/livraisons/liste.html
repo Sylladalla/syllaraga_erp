@@ -1,0 +1,182 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}
+Liste des livraisons
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Messages Django -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- En-tête -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1" style="color: #198754;">
+                <i class="bi bi-truck me-2"></i>Gestion des livraisons
+            </h2>
+            <p class="text-muted mb-0">
+                Consultez les livraisons, les clients, les zones et les livreurs.
+            </p>
+        </div>
+
+        <a href="{% url 'liste_zones' %}" class="btn btn-outline-success">
+            <i class="bi bi-geo-alt me-1"></i>
+            Zones de livraison
+        </a>
+    </div>
+
+    <!-- Indicateur -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-3 p-3 text-white" style="background-color: #198754;">
+                        <i class="bi bi-box-seam fs-3"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Livraisons affichées</div>
+                        <div class="fs-3 fw-bold">{{ livraisons|length }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tableau des livraisons -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0 fw-bold">
+                <i class="bi bi-list-ul me-2 text-success"></i>
+                Liste des livraisons
+            </h5>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead style="background-color: #198754; color: white;">
+                        <tr>
+                            <th class="px-3 py-3">N° vente</th>
+                            <th class="py-3">Client</th>
+                            <th class="py-3">Zone</th>
+                            <th class="py-3">Livreur</th>
+                            <th class="py-3">Statut</th>
+                            <th class="py-3">Date de livraison</th>
+                            <th class="text-center py-3">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for livraison in livraisons %}
+                            <tr>
+                                <td class="px-3">
+                                    <span class="fw-bold text-success">
+                                        #{{ livraison.vente.id }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <i class="bi bi-person me-1 text-muted"></i>
+                                    {{ livraison.vente.client.nom }}
+                                </td>
+
+                                <td>
+                                    {% if livraison.zone %}
+                                        <span class="badge bg-light text-dark border">
+                                            <i class="bi bi-geo-alt me-1"></i>
+                                            {{ livraison.zone.nom }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted">Non définie</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if livraison.livreur %}
+                                        <i class="bi bi-person-badge me-1 text-muted"></i>
+                                        {{ livraison.livreur }}
+                                    {% else %}
+                                        <span class="text-muted">Non assigné</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if livraison.statut == "LIVREE" %}
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            {{ livraison.get_statut_display }}
+                                        </span>
+                                    {% elif livraison.statut == "EN_COURS" %}
+                                        <span class="badge bg-primary">
+                                            <i class="bi bi-truck me-1"></i>
+                                            {{ livraison.get_statut_display }}
+                                        </span>
+                                    {% elif livraison.statut == "ANNULEE" %}
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-x-circle me-1"></i>
+                                            {{ livraison.get_statut_display }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">
+                                            {{ livraison.get_statut_display }}
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if livraison.date_livraison %}
+                                        <i class="bi bi-calendar3 me-1 text-muted"></i>
+                                        {{ livraison.date_livraison|date:"d/m/Y H:i" }}
+                                    {% else %}
+                                        <span class="text-muted">Non renseignée</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-center">
+                                    <a href="{% url 'detail_livraison' livraison.id %}"
+                                       class="btn btn-outline-success btn-sm">
+                                        <i class="bi bi-eye me-1"></i>
+                                        Détail
+                                    </a>
+                                </td>
+                            </tr>
+
+                        {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-5">
+                                    <i class="bi bi-truck fs-1 text-muted d-block mb-3"></i>
+                                    <h6 class="fw-bold">Aucune livraison enregistrée</h6>
+                                    <p class="text-muted mb-0">
+                                        Les livraisons apparaîtront ici lorsqu'elles seront créées.
+                                    </p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer bg-white text-muted small">
+            <i class="bi bi-info-circle me-1"></i>
+            Le nombre affiché correspond aux livraisons présentes dans la variable fournie par la vue.
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

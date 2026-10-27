@@ -1,0 +1,211 @@
+
+{% load static %}
+{% with current_url=request.resolver_match.url_name %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        Syllaraga ERP
+        {% endblock %}
+    </title>
+
+
+    <!-- Bootstrap 5 -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- CSS personnalisé -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- ===================================== -->
+<!-- NAVBAR -->
+<!-- ===================================== -->
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-syllaraga">
+
+    <div class="container-fluid">
+
+
+       <a class="navbar-brand fw-bold d-flex align-items-center gap-2"
+   href="/dashboard/">
+    <img src="{% static 'images/logo-syllaraga.png' %}"
+         alt="Logo Syllaraga"
+         style="height:40px; width:auto;">
+    <span>SYLLARAGA ERP</span>
+</a>
+
+
+        <div class="d-flex align-items-center text-white">
+
+
+            <span class="me-3">
+
+                <i class="bi bi-person-circle"></i>
+
+                {{ request.user.username }}
+
+            </span>
+
+
+            <a
+                href="{% url 'deconnexion' %}"
+                class="btn btn-light btn-sm"
+            >
+
+                🚪 Déconnexion
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ===================================== -->
+<!-- STRUCTURE ERP -->
+<!-- ===================================== -->
+
+<div class="erp-layout">
+
+
+    <!-- ================================= -->
+    <!-- SIDEBAR -->
+    <!-- ================================= -->
+
+
+<aside class="sidebar-syllaraga">
+    <ul class="nav flex-column">
+
+        <!-- 1. DASHBOARD -->
+        <li class="nav-item">
+            <a class="nav-link {% if current_url == 'dashboard' %}active{% endif %}" href="/dashboard/">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+        </li>
+
+        <!-- 2. PRODUITS : Admin, Superuser ou Vendeur -->
+        {% if request.user.role|upper == 'ADMINISTRATEUR' or request.user.is_superuser or request.user.role|upper == 'VENDEUR' %}
+        <li><a class="nav-link" href="{% url 'liste_produits' %}"><i class="bi bi-box"></i> Produits</a></li>
+        {% endif %}
+
+        <!-- 3. STOCK : Admin, Superuser ou Magasinier -->
+        {% if request.user.role|upper == 'ADMINISTRATEUR' or request.user.is_superuser or request.user.role|upper == 'MAGASINIER' %}
+        <li><a class="nav-link" href="{% url 'liste_stock' %}"><i class="bi bi-boxes"></i> Stock</a></li>
+        {% endif %}
+
+        <!-- 4. ACHATS : Admin ou Superuser -->
+        {% if request.user.role|upper == 'ADMINISTRATEUR' or request.user.is_superuser %}
+        <li><a class="nav-link" href="{% url 'liste_achats' %}"><i class="bi bi-cart-plus"></i> Achats</a></li>
+        {% endif %}
+        <!-- 5. FOURNISSEURS : Admin ou Superuser  -->
+{% if request.user.role|upper == 'ADMINISTRATEUR' or request.user.is_superuser %}
+<li class="nav-item">
+    <a class="nav-link {% if current_url == 'liste_fournisseurs' %}active{% endif %}"
+       href="{% url 'liste_fournisseurs' %}">
+        <i class="bi bi-truck"></i> Fournisseurs
+    </a>
+</li>
+{% endif %}
+
+        <!-- 5. TRANSFORMATIONS : Admin ou Superuser -->
+        {% if request.user.role|upper == 'ADMINISTRATEUR' or request.user.is_superuser %}
+        <li><a class="nav-link" href="{% url 'liste_transformations' %}"><i class="bi bi-arrow-repeat"></i> Transformations</a></li>
+        {% endif %}
+
+        <!-- 6. VENTES : Admin, Superuser ou Vendeur -->
+        {% if request.user.role|upper == 'ADMINISTRATEUR' or request.user.is_superuser or request.user.role|upper == 'VENDEUR' %}
+        <li><a class="nav-link" href="{% url 'liste_ventes' %}"><i class="bi bi-cart-check"></i> Ventes</a></li>
+        {% endif %}
+
+        <!-- 7. LIVRAISONS : Admin, Superuser ou Livreur -->
+        {% if request.user.role|upper == 'ADMINISTRATEUR' or request.user.is_superuser or request.user.role|upper == 'LIVREUR' %}
+        <li><a class="nav-link" href="{% url 'liste_livraisons' %}"><i class="bi bi-truck"></i> Livraisons</a></li>
+        {% endif %}
+
+        <!-- 8. PAIEMENTS : Admin ou Superuser -->
+        {% if request.user.role|upper == 'ADMINISTRATEUR' or request.user.is_superuser %}
+        <li><a class="nav-link" href="{% url 'liste_paiements' %}"><i class="bi bi-credit-card"></i> Paiements</a></li>
+        {% endif %}
+
+        <!-- 9. FACTURES : Admin ou Superuser -->
+        {% if request.user.role|upper == 'ADMINISTRATEUR' or request.user.is_superuser %}
+        <li><a class="nav-link" href="{% url 'liste_factures' %}"><i class="bi bi-receipt"></i> Factures</a></li>
+        {% endif %}
+
+        <!-- 10. UTILISATEURS : Admin ou Superuser -->
+        {% if request.user.role|upper == 'ADMINISTRATEUR' or request.user.is_superuser %}
+        <li><a class="nav-link" href="{% url 'liste_utilisateurs' %}"><i class="bi bi-people"></i> Utilisateurs</a></li>
+        {% endif %}
+
+    </ul>
+</aside>
+
+
+    <!-- ================================= -->
+    <!-- CONTENU PRINCIPAL -->
+    <!-- ================================= -->
+
+    <main class="main-content">
+
+
+        {% block content %}
+
+        {% endblock %}
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- BOOTSTRAP JS -->
+<!-- ===================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+</body>
+
+</html>
+
+{% endwith %}

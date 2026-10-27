@@ -1,0 +1,562 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}
+Gestion du Stock | Syllaraga ERP
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .stock-page {
+        padding: 10px 0 30px;
+    }
+
+    .stock-header {
+        background: linear-gradient(135deg, #2E8B57, #247447);
+        color: white;
+        padding: 26px 28px;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        box-shadow: 0 5px 18px rgba(46, 139, 87, .15);
+    }
+
+    .stock-header h2 {
+        font-weight: 750;
+        margin-bottom: 7px;
+    }
+
+    .stock-header p {
+        margin: 0;
+        opacity: .9;
+    }
+
+    .stock-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 9px 12px;
+        border-radius: 9px;
+        font-size: .88rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: .2s ease;
+        white-space: nowrap;
+    }
+
+    .stock-action:hover {
+        transform: translateY(-1px);
+    }
+
+    .stock-action-light {
+        background: white;
+        color: #247447;
+        border: 1px solid white;
+    }
+
+    .stock-action-light:hover {
+        background: #edf8f0;
+        color: #185b34;
+    }
+
+    .stock-action-outline {
+        background: rgba(255, 255, 255, .10);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, .5);
+    }
+
+    .stock-action-outline:hover {
+        background: white;
+        color: #247447;
+    }
+
+    .stock-action-danger {
+        background: #fff0f0;
+        color: #a52b36;
+        border: 1px solid #f5d0d3;
+    }
+
+    .stock-action-danger:hover {
+        background: #b92f3b;
+        color: white;
+    }
+
+    .stock-search-card,
+    .stock-table-card {
+        background: white;
+        border: 1px solid #e7eee9;
+        border-radius: 15px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, .035);
+        overflow: hidden;
+    }
+
+    .stock-search-card {
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .stock-search-card label {
+        color: #334238;
+        font-weight: 650;
+        margin-bottom: 9px;
+    }
+
+    .stock-search-card .form-control {
+        min-height: 45px;
+        border-color: #dce5de;
+        border-radius: 9px 0 0 9px;
+    }
+
+    .stock-search-card .form-control:focus {
+        border-color: #2E8B57;
+        box-shadow: 0 0 0 .2rem rgba(46, 139, 87, .12);
+    }
+
+    .stock-search-card .btn {
+        border-radius: 0 9px 9px 0;
+        font-weight: 600;
+    }
+
+    .stock-table-heading {
+        padding: 20px 22px;
+        border-bottom: 1px solid #e8eee9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .stock-table-heading h5 {
+        color: #26382c;
+        font-weight: 750;
+        margin: 0;
+    }
+
+    .stock-count {
+        background: #eaf6ee;
+        color: #247447;
+        border-radius: 20px;
+        padding: 7px 12px;
+        font-weight: 650;
+        font-size: .82rem;
+        white-space: nowrap;
+    }
+
+    .stock-table {
+        margin: 0;
+        vertical-align: middle;
+    }
+
+    .stock-table thead th {
+        background: #edf7ef;
+        color: #286b43;
+        font-size: .80rem;
+        font-weight: 750;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+        padding: 15px 16px;
+        border-bottom: 1px solid #dceade;
+        white-space: nowrap;
+    }
+
+    .stock-table tbody td {
+        padding: 16px;
+        border-color: #f0f2f0;
+    }
+
+    .stock-table tbody tr:hover {
+        background: #f8fcf9;
+    }
+
+    .stock-product-name {
+        color: #28382d;
+        font-weight: 700;
+    }
+
+    .stock-quantity {
+        font-size: 1rem;
+        font-weight: 750;
+        color: #247447;
+    }
+
+    .stock-threshold {
+        color: #657168;
+        font-weight: 600;
+    }
+
+    .stock-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 8px;
+        font-size: .78rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .stock-status-rupture {
+        color: #a52b36;
+        background: #fbe5e7;
+    }
+
+    .stock-status-low {
+        color: #805b00;
+        background: #fff2cc;
+    }
+
+    .stock-status-ok {
+        color: #17683a;
+        background: #dff4e5;
+    }
+
+    .stock-detail-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 11px;
+        border: 1px solid #d5e9dc;
+        border-radius: 8px;
+        background: #eaf6ee;
+        color: #247447;
+        text-decoration: none;
+        font-size: .85rem;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .stock-detail-btn:hover {
+        background: #2E8B57;
+        border-color: #2E8B57;
+        color: white;
+    }
+
+    .stock-empty {
+        padding: 45px 20px !important;
+        text-align: center;
+        color: #748078;
+    }
+
+    .stock-empty i {
+        display: block;
+        font-size: 2.5rem;
+        color: #9ebca7;
+        margin-bottom: 12px;
+    }
+
+    .stock-pagination .page-link {
+        color: #247447;
+        border-color: #e0e9e2;
+        padding: 9px 14px;
+    }
+
+    .stock-pagination .page-item.active .page-link {
+        background: #2E8B57;
+        border-color: #2E8B57;
+        color: white;
+    }
+
+    @media (max-width: 992px) {
+        .stock-header .stock-actions {
+            margin-top: 20px;
+        }
+
+        .stock-actions {
+            justify-content: flex-start !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .stock-header {
+            padding: 20px;
+        }
+
+        .stock-table-heading {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .stock-table thead th,
+        .stock-table tbody td {
+            padding: 12px;
+        }
+    }
+</style>
+
+<div class="container-fluid stock-page">
+
+    <!-- EN-TÊTE -->
+    <div class="stock-header">
+
+        <div class="d-flex flex-column flex-lg-row
+                    justify-content-between align-items-lg-center">
+
+            <div>
+                <h2>
+                    <i class="bi bi-box-seam me-2"></i>
+                    Gestion du Stock
+                </h2>
+
+                <p>
+                    Suivi des produits, des quantités disponibles et des alertes.
+                </p>
+            </div>
+
+            <div class="stock-actions d-flex flex-wrap gap-2">
+
+                <a href="{% url 'liste_lots' %}"
+                   class="stock-action stock-action-light">
+                    <i class="bi bi-boxes"></i>
+                    Lots
+                </a>
+
+                <a href="{% url 'stocks_faibles' %}"
+                   class="stock-action stock-action-outline">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    Stocks faibles
+                </a>
+
+                <a href="{% url 'alertes_peremption' %}"
+                   class="stock-action stock-action-outline">
+                    <i class="bi bi-calendar2-x"></i>
+                    Alertes péremption
+                </a>
+
+                <a href="{% url 'lots_perimes' %}"
+                   class="stock-action stock-action-danger">
+                    <i class="bi bi-x-octagon"></i>
+                    Lots périmés
+                </a>
+
+                <a href="{% url 'liste_ruptures' %}"
+                   class="stock-action stock-action-danger">
+                    <i class="bi bi-exclamation-circle"></i>
+                    Ruptures
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RECHERCHE -->
+    <div class="stock-search-card">
+
+        <form method="GET">
+
+            <label for="recherche-stock">
+                <i class="bi bi-search me-1"></i>
+                Rechercher un produit
+            </label>
+
+            <div class="input-group">
+
+                <input
+                    id="recherche-stock"
+                    type="text"
+                    name="recherche"
+                    class="form-control"
+                    placeholder="Nom du produit..."
+                    value="{{ recherche|default:'' }}"
+                >
+
+                <button type="submit" class="btn btn-success px-4">
+                    <i class="bi bi-search me-1"></i>
+                    Rechercher
+                </button>
+
+                {% if recherche %}
+                    <a href="{% url 'liste_stock' %}"
+                       class="btn btn-outline-secondary">
+                        Réinitialiser
+                    </a>
+                {% endif %}
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- TABLEAU DES STOCKS -->
+    <div class="stock-table-card">
+
+        <div class="stock-table-heading">
+
+            <h5>
+                <i class="bi bi-clipboard-data me-2 text-success"></i>
+                État des stocks
+            </h5>
+
+            <span class="stock-count">
+                {{ stocks.paginator.count }} produit(s)
+            </span>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table stock-table">
+
+                <thead>
+                    <tr>
+                        <th class="ps-4">Produit</th>
+                        <th>Quantité disponible</th>
+                        <th>Seuil d'alerte</th>
+                        <th>État du stock</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for stock in stocks %}
+
+                    <tr>
+
+                        <td class="ps-4">
+                            <span class="stock-product-name">
+                                {{ stock.produit.nom }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="stock-quantity">
+                                {{ stock.quantite_disponible }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="stock-threshold">
+                                {{ stock.seuil_alerte }}
+                            </span>
+                        </td>
+
+                        <td>
+
+                            {% if stock.quantite_disponible == 0 %}
+
+                                <span class="stock-status stock-status-rupture">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                    Rupture
+                                </span>
+
+                            {% elif stock.quantite_disponible <= stock.seuil_alerte %}
+
+                                <span class="stock-status stock-status-low">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                    Stock faible
+                                </span>
+
+                            {% else %}
+
+                                <span class="stock-status stock-status-ok">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Disponible
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td class="text-center">
+                            <a
+                                href="{% url 'detail_stock' stock.id %}"
+                                class="stock-detail-btn">
+
+                                <i class="bi bi-eye"></i>
+                                Voir le détail
+
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="5" class="stock-empty">
+
+                            <i class="bi bi-inbox"></i>
+
+                            <strong class="d-block mb-2">
+                                Aucun stock trouvé
+                            </strong>
+
+                            <span>
+                                {% if recherche %}
+                                    Aucun produit ne correspond à cette recherche.
+                                {% else %}
+                                    Aucun stock n'est enregistré pour le moment.
+                                {% endif %}
+                            </span>
+
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- PAGINATION -->
+    {% if stocks.paginator.num_pages > 1 %}
+
+        <nav class="mt-4" aria-label="Pagination des stocks">
+
+            <ul class="pagination stock-pagination justify-content-center">
+
+                {% if stocks.has_previous %}
+
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="?page={{ stocks.previous_page_number }}&recherche={{ recherche|default:''|urlencode }}">
+
+                            <i class="bi bi-chevron-left me-1"></i>
+                            Précédent
+
+                        </a>
+                    </li>
+
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link">
+                        Page {{ stocks.number }}
+                        / {{ stocks.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if stocks.has_next %}
+
+                    <li class="page-item">
+                        <a
+                            class="page-link"
+                            href="?page={{ stocks.next_page_number }}&recherche={{ recherche|default:''|urlencode }}">
+
+                            Suivant
+                            <i class="bi bi-chevron-right ms-1"></i>
+
+                        </a>
+                    </li>
+
+                {% endif %}
+
+            </ul>
+
+        </nav>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

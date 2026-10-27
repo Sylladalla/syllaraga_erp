@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}
+Supprimer une zone
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+```
+<div class="card shadow">
+
+    <div class="card-header bg-danger text-white">
+
+        <h3>
+            🗑️ Supprimer une zone
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+            Voulez-vous vraiment supprimer la zone :
+        </p>
+
+        <h5>
+            {{ zone.nom }}
+        </h5>
+
+        <p>
+            Frais :
+            <strong>
+                {{ zone.frais }} FCFA
+            </strong>
+        </p>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="btn btn-danger">
+
+                🗑️ Oui, supprimer
+
+            </button>
+
+
+            <a href="{% url 'liste_zones' %}"
+               class="btn btn-secondary">
+
+                Annuler
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

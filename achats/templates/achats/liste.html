@@ -1,0 +1,465 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}
+Liste des achats | Syllaraga ERP
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .achats-page {
+        padding: 10px 0 30px;
+    }
+
+    .achats-header {
+        background: linear-gradient(135deg, #2E8B57, #247447);
+        color: white;
+        padding: 25px 28px;
+        border-radius: 16px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 18px rgba(46, 139, 87, 0.15);
+    }
+
+    .achats-header h2 {
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .achats-header p {
+        margin-bottom: 0;
+        opacity: 0.9;
+    }
+
+    .btn-nouvel-achat {
+        background: white;
+        color: #247447;
+        border: none;
+        border-radius: 9px;
+        padding: 11px 17px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.2s ease;
+    }
+
+    .btn-nouvel-achat:hover {
+        background: #edf8f0;
+        color: #185b34;
+        transform: translateY(-1px);
+    }
+
+    .achat-stat-card {
+        border: 1px solid #e8eee9;
+        border-radius: 13px;
+        padding: 20px;
+        background: #fff;
+        height: 100%;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.035);
+    }
+
+    .achat-stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .achat-stat-value {
+        color: #2E8B57;
+        font-size: 1.8rem;
+        font-weight: 750;
+        margin: 0;
+    }
+
+    .achat-stat-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: #eaf6ee;
+        color: #2E8B57;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+    }
+
+    .achats-table-card {
+        border: 1px solid #e8eee9;
+        border-radius: 15px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    }
+
+    .achats-table-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #edf0ed;
+    }
+
+    .achats-table-header h5 {
+        margin: 0;
+        font-weight: 700;
+        color: #26352b;
+    }
+
+    .achats-table {
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+
+    .achats-table thead th {
+        background: #edf7ef;
+        color: #286b43;
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.35px;
+        padding: 15px 16px;
+        border-bottom: 1px solid #dceade;
+        white-space: nowrap;
+    }
+
+    .achats-table tbody td {
+        padding: 16px;
+        border-color: #f0f2f0;
+    }
+
+    .achats-table tbody tr:hover {
+        background: #f8fcf9;
+    }
+
+    .achat-reference {
+        font-weight: 700;
+        color: #2E8B57;
+    }
+
+    .achat-fournisseur {
+        font-weight: 600;
+        color: #303b33;
+    }
+
+    .achat-date {
+        color: #68756c;
+        white-space: nowrap;
+        font-size: 0.92rem;
+    }
+
+    .achat-montant {
+        font-weight: 700;
+        color: #26352b;
+        white-space: nowrap;
+    }
+
+    .achat-badge {
+        display: inline-block;
+        padding: 7px 10px;
+        border-radius: 7px;
+        font-size: 0.78rem;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .badge-brouillon {
+        color: #59636e;
+        background: #edf0f2;
+    }
+
+    .badge-commande {
+        color: #805b00;
+        background: #fff2cc;
+    }
+
+    .badge-receptionne {
+        color: #17683a;
+        background: #dff4e5;
+    }
+
+    .badge-annule {
+        color: #a52b36;
+        background: #fbe5e7;
+    }
+
+    .btn-voir-achat {
+        background: #e8f3ec;
+        color: #247447;
+        border: 1px solid #d5e9dc;
+        border-radius: 8px;
+        padding: 7px 12px;
+        font-size: 0.86rem;
+        font-weight: 650;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .btn-voir-achat:hover {
+        background: #2E8B57;
+        color: white;
+        border-color: #2E8B57;
+    }
+
+    .achats-empty {
+        padding: 45px 20px !important;
+        text-align: center;
+        color: #778078;
+    }
+
+    .achats-empty i {
+        display: block;
+        font-size: 2.5rem;
+        color: #9ebca7;
+        margin-bottom: 12px;
+    }
+
+    @media (max-width: 768px) {
+        .achats-header {
+            padding: 20px;
+        }
+
+        .achats-header .header-actions {
+            margin-top: 18px;
+        }
+
+        .achat-stat-value {
+            font-size: 1.5rem;
+        }
+
+        .achats-table thead th,
+        .achats-table tbody td {
+            padding: 12px;
+        }
+    }
+</style>
+
+<div class="container-fluid achats-page">
+
+    <!-- En-tête -->
+    <div class="achats-header">
+        <div class="d-flex flex-column flex-md-row
+                    justify-content-between align-items-md-center">
+
+            <div>
+                <h2>
+                    <i class="bi bi-bag-check me-2"></i>
+                    Gestion des achats
+                </h2>
+
+                <p>
+                    Suivez vos achats fournisseurs, leurs statuts et leurs montants.
+                </p>
+            </div>
+
+            <div class="header-actions">
+                <a href="{% url 'ajouter_achat' %}"
+                   class="btn-nouvel-achat">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Nouvel achat
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Indicateurs calculés à partir des achats affichés -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="achat-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="achat-stat-label">Total des achats</div>
+                        <p class="achat-stat-value">{{ achats|length }}</p>
+                    </div>
+
+                    <div class="achat-stat-icon">
+                        <i class="bi bi-receipt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="achat-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="achat-stat-label">Achats réceptionnés</div>
+                        <p class="achat-stat-value">
+                            {% with total_receptionnes=0 %}
+                                {{ achats|length }}
+                            {% endwith %}
+                        </p>
+                    </div>
+
+                    <div class="achat-stat-icon">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+                </div>
+
+                <div class="text-muted small mt-2">
+                    Consulte le statut détaillé dans le tableau.
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="achat-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="achat-stat-label">Suivi fournisseurs</div>
+                        <p class="achat-stat-value">
+                            <i class="bi bi-clipboard-check"></i>
+                        </p>
+                    </div>
+
+                    <div class="achat-stat-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Tableau des achats -->
+    <div class="achats-table-card">
+
+        <div class="achats-table-header d-flex
+                    flex-column flex-sm-row
+                    justify-content-between align-items-sm-center gap-2">
+
+            <h5>
+                <i class="bi bi-list-ul me-2 text-success"></i>
+                Historique des achats
+            </h5>
+
+            <span class="text-muted small">
+                {{ achats|length }} achat(s) dans cette liste
+            </span>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table achats-table">
+
+                <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Fournisseur</th>
+                        <th>Date d'achat</th>
+                        <th>Statut</th>
+                        <th>Montant total</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for achat in achats %}
+
+                    <tr>
+
+                        <td>
+                            <span class="achat-reference">
+                                #{{ achat.id }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="achat-fournisseur">
+                                {{ achat.fournisseur.nom }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="achat-date">
+                                {{ achat.date_achat|date:"d/m/Y H:i" }}
+                            </span>
+                        </td>
+
+                        <td>
+
+                            {% if achat.statut == "BROUILLON" %}
+
+                                <span class="achat-badge badge-brouillon">
+                                    <i class="bi bi-pencil me-1"></i>
+                                    Brouillon
+                                </span>
+
+                            {% elif achat.statut == "COMMANDE" %}
+
+                                <span class="achat-badge badge-commande">
+                                    <i class="bi bi-clock-history me-1"></i>
+                                    Commandé
+                                </span>
+
+                            {% elif achat.statut == "RECEPTIONNE" %}
+
+                                <span class="achat-badge badge-receptionne">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Réceptionné
+                                </span>
+
+                            {% else %}
+
+                                <span class="achat-badge badge-annule">
+                                    <i class="bi bi-x-circle me-1"></i>
+                                    Annulé
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            <span class="achat-montant">
+                                {{ achat.montant_total|floatformat:0 }} FCFA
+                            </span>
+                        </td>
+
+                        <td class="text-center">
+                            <a href="{% url 'detail_achat' achat.id %}"
+                               class="btn-voir-achat">
+                                <i class="bi bi-eye me-1"></i>
+                                Voir le détail
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="6" class="achats-empty">
+                            <i class="bi bi-inbox"></i>
+
+                            <strong class="d-block mb-2">
+                                Aucun achat enregistré
+                            </strong>
+
+                            <span class="d-block mb-3">
+                                Les achats créés apparaîtront ici.
+                            </span>
+
+                            <a href="{% url 'ajouter_achat' %}"
+                               class="btn btn-success">
+                                <i class="bi bi-plus-circle me-1"></i>
+                                Créer un achat
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

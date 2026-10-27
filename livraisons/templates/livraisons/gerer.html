@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gestion de la livraison
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+```
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+
+        <h3>
+            🚚 Livraison de la vente #{{ vente.id }}
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+            Client :
+            <strong>{{ vente.client.nom }}</strong>
+        </p>
+
+        <p>
+            Téléphone :
+            {{ vente.client.telephone }}
+        </p>
+
+        <hr>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Adresse de livraison
+                </label>
+
+                {{ form.adresse_livraison }}
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Zone de livraison
+                </label>
+            
+                <div class="d-flex gap-2">
+            
+                    {{ form.zone }}
+            
+                    <a href="{% url 'liste_zones' %}"
+                       class="btn btn-outline-primary">
+            
+                        📍 Zones
+            
+                    </a>
+            
+                </div>
+            
+            </div>
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Livreur
+                </label>
+
+                {{ form.livreur }}
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Téléphone du livreur
+                </label>
+
+                {{ form.telephone_livreur }}
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Statut
+                </label>
+
+                {{ form.statut }}
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-success">
+
+                💾 Enregistrer la livraison
+
+            </button>
+
+            <a href="{% url 'detail_vente' vente.id %}"
+               class="btn btn-secondary">
+
+                Retour
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

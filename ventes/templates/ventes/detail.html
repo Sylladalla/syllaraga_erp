@@ -1,0 +1,385 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if messages %}
+
+```
+{% for message in messages %}
+
+    <div class="alert alert-{{ message.tags }} mt-3">
+        {{ message }}
+    </div>
+
+{% endfor %}
+```
+
+{% endif %}
+
+<div class="container mt-4">
+
+```
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+
+        <h3>
+            Vente #{{ vente.id }}
+        </h3>
+
+    </div>
+
+
+    <div class="card-body">
+
+        <p>
+            Client :
+            <strong>{{ vente.client.nom }}</strong>
+        </p>
+
+        <p>
+            Type :
+            {{ vente.get_type_vente_display }}
+        </p>
+
+        <p>
+            Statut :
+            {{ vente.get_statut_display }}
+        </p>
+
+        <p>
+            Montant :
+            <strong>{{ vente.montant_total }} FCFA</strong>
+        </p>
+
+
+        <hr>
+
+
+        {% if vente.statut == "BROUILLON" %}
+
+            <h5 class="mb-3">
+                🛒 Sélectionner un produit
+            </h5>
+
+
+            <!-- QUANTITE -->
+
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Quantité
+                </label>
+
+                <input type="number"
+                       id="quantite-produit"
+                       class="form-control"
+                       value="1"
+                       min="1"
+                       style="max-width: 150px;">
+
+            </div>
+
+
+            <!-- FORMULAIRE CSRF -->
+
+            <form id="form-produit-direct">
+
+                {% csrf_token %}
+
+            </form>
+
+
+            <!-- PRODUITS -->
+
+            <div class="row">
+
+                {% for produit in produits %}
+
+                    <div class="col-md-3 col-sm-4 col-6 mb-4">
+
+                        <div class="card h-100 shadow-sm produit-card"
+                             data-produit-id="{{ produit.id }}"
+                             style="cursor: pointer;">
+
+                            {% if produit.image %}
+
+                                <img src="{{ produit.image.url }}"
+                                     class="card-img-top"
+                                     style="height: 160px; object-fit: cover;"
+                                     alt="{{ produit.nom }}">
+
+                            {% else %}
+
+                                <div class="d-flex align-items-center justify-content-center bg-light"
+                                     style="height: 160px;">
+
+                                    📦 Pas d'image
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <div class="card-body text-center">
+
+                                <h6>
+                                    {{ produit.nom }}
+                                </h6>
+
+                                <strong class="text-success">
+                                    {{ produit.prix_vente }} FCFA
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="alert alert-warning">
+                        Aucun produit disponible.
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <hr>
+
+        {% endif %}
+
+
+        <!-- PRODUITS VENDUS -->
+
+        <h5 class="mb-3">
+            🧾 Produits vendus
+        </h5>
+
+
+        <table class="table table-bordered">
+
+            <thead>
+
+                <tr>
+
+                    <th>Produit</th>
+
+                    <th>Quantité</th>
+
+                    <th>Prix unitaire</th>
+
+                    <th>Total</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for ligne in lignes %}
+
+                    <tr>
+
+                        <td>
+                            {{ ligne.produit.nom }}
+                        </td>
+
+                        <td>
+                            {{ ligne.quantite }}
+                        </td>
+
+                        <td>
+                            {{ ligne.prix_unitaire }} FCFA
+                        </td>
+
+                        <td>
+                            {{ ligne.quantite|floatformat:2 }} ×
+                            {{ ligne.prix_unitaire }} FCFA
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="4"
+                            class="text-center">
+
+                            Aucun produit ajouté.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        <!-- ACTIONS -->
+
+        <!-- ACTIONS -->
+
+<div class="mt-4">
+
+    {% if vente.statut == "BROUILLON" %}
+
+        <a href="{% url 'confirmer_vente' vente.id %}"
+           class="btn btn-success">
+
+            ✅ Confirmer la vente
+
+        </a>
+
+        <a href="{% url 'annuler_vente' vente.id %}"
+           class="btn btn-danger">
+
+            ❌ Annuler la vente
+
+        </a>
+
+    {% elif vente.statut == "CONFIRMEE" %}
+
+        <a href="{% url 'effectuer_paiement' vente.id %}"
+           class="btn btn-primary">
+
+            💳 Effectuer le paiement
+
+        </a>
+
+        {% if vente.type_vente == "EN_LIGNE" %}
+
+            <a href="{% url 'gerer_livraison' vente.id %}"
+               class="btn btn-warning">
+
+                🚚 Gérer la livraison
+
+            </a>
+
+        {% endif %}
+        {% if vente.paiement.statut == "PAYE" %}
+
+    <a href="{% url 'imprimer_facture' vente.facture.id %}"
+       class="btn btn-danger">
+
+        🧾 Imprimer la facture
+
+    </a>
+
+{% endif %}
+
+    {% endif %}
+
+</div>
+
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- JAVASCRIPT -->
+
+{% if vente.statut == "BROUILLON" %}
+
+<script>
+
+document.querySelectorAll(".produit-card").forEach(function(card) {
+
+    card.addEventListener("click", function() {
+
+        const produitId = this.dataset.produitId;
+
+        const quantiteElement =
+            document.getElementById("quantite-produit");
+
+        const quantite = quantiteElement.value;
+
+        const csrfToken =
+            document.querySelector(
+                '[name=csrfmiddlewaretoken]'
+            ).value;
+
+
+        if (!quantite || quantite < 1) {
+
+            alert("Veuillez saisir une quantité valide.");
+
+            return;
+
+        }
+
+
+        fetch(
+            "{% url 'ajouter_produit_direct' vente.id %}",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "X-CSRFToken": csrfToken,
+
+                    "Content-Type":
+                        "application/x-www-form-urlencoded"
+
+                },
+
+                body:
+                    "produit_id=" + produitId +
+                    "&quantite=" + quantite
+
+            }
+
+        )
+
+        .then(function(response) {
+
+            return response.json();
+
+        })
+
+        .then(function(data) {
+
+            if (!data.success) {
+
+                alert(data.message);
+
+                return;
+
+            }
+
+            location.reload();
+
+        })
+
+        .catch(function(error) {
+
+            console.error(error);
+
+            alert(
+                "Une erreur est survenue lors de l'ajout du produit."
+            );
+
+        });
+
+    });
+
+});
+
+</script>
+
+{% endif %}
+
+{% endblock %}

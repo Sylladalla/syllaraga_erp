@@ -1,0 +1,73 @@
+
+{% extends "base.html" %}
+
+{% block title %}Détail du paiement fournisseur{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">💰 Détail du règlement fournisseur</h3>
+        </div>
+
+        <div class="card-body">
+            <p>
+                <strong>Numéro du paiement :</strong>
+                {{ paiement.id }}
+            </p>
+
+            <p>
+                <strong>Achat :</strong>
+                N°{{ paiement.achat.id }}
+            </p>
+
+            <p>
+                <strong>Fournisseur :</strong>
+                {{ paiement.achat.fournisseur.nom }}
+            </p>
+
+            <p>
+                <strong>Montant réglé :</strong>
+                <span class="text-success fw-bold">
+                    {{ paiement.montant|floatformat:2 }} FCFA
+                </span>
+            </p>
+
+            <p>
+                <strong>Mode de paiement :</strong>
+                {{ paiement.get_mode_paiement_display }}
+            </p>
+
+            <p>
+                <strong>Référence :</strong>
+                {{ paiement.reference|default:"Non renseignée" }}
+            </p>
+
+            <p>
+                <strong>Date :</strong>
+                {{ paiement.date_paiement|date:"d/m/Y à H:i" }}
+            </p>
+
+            <p>
+                <strong>Observation :</strong>
+                {{ paiement.observation|default:"Aucune observation" }}
+            </p>
+
+            <hr>
+
+            <a href="{% url 'paiement_fournisseur' paiement.achat.id %}"
+               class="btn btn-primary">
+                ← Retour aux paiements de cet achat
+            </a>
+
+            <a href="{% url 'detail_achat' paiement.achat.id %}"
+               class="btn btn-secondary">
+                Voir l'achat
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+

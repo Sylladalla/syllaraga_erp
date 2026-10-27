@@ -1,0 +1,22 @@
+
+{% extends "base_boutique.html" %}
+
+{% block title %}Mon espace client | Syllaraga{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <h2>Bienvenue {{ client.prenom }} {{ client.nom }} !</h2>
+            <p>Vous êtes connecté à votre espace client Syllaraga.</p>
+            <p><strong>Téléphone :</strong> {{ client.telephone }}</p>
+            <p><strong>E-mail :</strong> {{ client.email|default:"Non renseigné" }}</p>
+
+            <a class="btn btn-outline-danger"
+               href="{% url 'deconnexion_client' %}">
+                Se déconnecter
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

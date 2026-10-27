@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Liste fournisseurs
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="container mt-4">
+
+
+<h2>
+    👥 Fournisseurs
+</h2>
+
+
+<a href="{% url 'ajouter_fournisseur' %}"
+   class="btn btn-success mb-3">
+
+    ➕ Nouveau fournisseur
+
+</a>
+
+
+
+<table class="table table-bordered table-hover">
+
+
+<thead class="table-success">
+
+<tr>
+
+<th>Nom</th>
+<th>Téléphone</th>
+<th>Email</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+{% for fournisseur in fournisseurs %}
+
+<tr>
+
+<td>
+{{ fournisseur.nom }}
+</td>
+
+
+<td>
+{{ fournisseur.telephone }}
+</td>
+
+
+<td>
+{{ fournisseur.email }}
+</td>
+
+
+<td>
+
+<a href="{% url 'detail_fournisseur' fournisseur.id %}"
+class="btn btn-primary btn-sm">
+
+Voir
+
+</a>
+
+</td>
+
+
+</tr>
+
+
+{% empty %}
+
+<tr>
+
+<td colspan="4">
+
+Aucun fournisseur
+
+</td>
+
+</tr>
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+{% endblock %}

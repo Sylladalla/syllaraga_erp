@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}
+Détail du Stock
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+        📦 Détail du Stock
+    </h2>
+
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+
+            <h4>{{ stock.produit.nom }}</h4>
+
+            <hr>
+
+            <p>
+                <strong>Quantité disponible :</strong>
+                {{ stock.quantite_disponible }}
+            </p>
+
+            <p>
+                <strong>Seuil d'alerte :</strong>
+                {{ stock.seuil_alerte }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header bg-success text-white">
+
+            🏷️ Lots disponibles
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Lot</th>
+                        <th>Quantité</th>
+                        <th>Péremption</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for lot in lots %}
+
+                    <tr>
+
+                        <td>{{ lot.numero_lot }}</td>
+
+                        <td>{{ lot.quantite }}</td>
+
+                        <td>{{ lot.date_peremption }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="3">
+
+                            Aucun lot.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            📜 Historique des mouvements
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Quantité</th>
+                        <th>Motif</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for mouvement in mouvements %}
+
+                    <tr>
+
+                        <td>{{ mouvement.date_mouvement }}</td>
+
+                        <td>{{ mouvement.type_mouvement }}</td>
+
+                        <td>{{ mouvement.quantite }}</td>
+
+                        <td>{{ mouvement.motif }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="4">
+
+                            Aucun mouvement.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,199 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Ajouter un produit à la vente
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+```
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+
+        <h3>
+            🛒 Ajouter un produit à la vente #{{ vente.id }}
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <h5 class="mb-3">
+            Sélectionner un produit
+        </h5>
+
+        <div class="row">
+
+            {% for produit in produits %}
+
+            <div class="col-md-3 col-sm-4 col-6 mb-4">
+
+                <div class="card h-100 shadow-sm produit-card"
+                     onclick="selectionnerProduit(
+                        {{ produit.id }},
+                        '{{ produit.nom|escapejs }}',
+                        '{{ produit.prix_vente }}'
+                     )"
+                     style="cursor: pointer;">
+
+                    {% if produit.image %}
+
+                        <img src="{{ produit.image.url }}"
+                             class="card-img-top"
+                             style="height: 160px; object-fit: cover;"
+                             alt="{{ produit.nom }}">
+
+                    {% else %}
+
+                        <div class="d-flex align-items-center justify-content-center bg-light"
+                             style="height: 160px;">
+
+                            <span class="text-muted">
+                                📦 Pas d'image
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+                    <div class="card-body text-center">
+
+                        <h6 class="card-title">
+                            {{ produit.nom }}
+                        </h6>
+
+                        <p class="text-success fw-bold mb-0">
+                            {{ produit.prix_vente }} FCFA
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+                <div class="alert alert-warning">
+                    Aucun produit disponible.
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <hr class="my-4">
+
+
+        <h5>
+            Produit sélectionné
+        </h5>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input type="hidden"
+                   name="produit"
+                   id="produit_id">
+
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Produit
+                </label>
+
+                <input type="text"
+                       id="produit_nom"
+                       class="form-control"
+                       readonly
+                       placeholder="Cliquez sur une image">
+
+            </div>
+
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Prix unitaire
+                </label>
+
+                <input type="text"
+                       id="prix_unitaire_affichage"
+                       class="form-control"
+                       readonly
+                       placeholder="Le prix apparaîtra ici">
+
+                <input type="hidden"
+                       name="prix_unitaire"
+                       id="prix_unitaire">
+
+            </div>
+
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Quantité
+                </label>
+
+                <input type="number"
+                       name="quantite"
+                       id="quantite"
+                       class="form-control"
+                       min="1"
+                       value="1"
+                       required>
+
+            </div>
+
+
+            <button type="submit"
+                    class="btn btn-primary">
+
+                ➕ Ajouter à la vente
+
+            </button>
+
+
+            <a href="{% url 'detail_vente' vente.id %}"
+               class="btn btn-secondary">
+
+                Retour
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<script>
+
+function selectionnerProduit(id, nom, prix) {
+
+    document.getElementById("produit_id").value = id;
+
+    document.getElementById("produit_nom").value = nom;
+
+    document.getElementById("prix_unitaire").value = prix;
+
+    document.getElementById("prix_unitaire_affichage").value =
+        prix + " FCFA";
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,410 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Nouvelle transformation
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow">
+
+```
+<div class="card-header bg-primary text-white">
+    <h3 class="mb-0">🔄 Nouvelle transformation</h3>
+</div>
+
+<div class="card-body">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <!-- ========================= -->
+        <!-- PRODUIT FINAL -->
+        <!-- ========================= -->
+
+        <h5 class="mb-3">
+            🧃 Produit final
+        </h5>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Nom du produit
+                </label>
+
+                {{ produit_form.nom }}
+
+                {% if produit_form.nom.errors %}
+                    <div class="text-danger">
+                        {{ produit_form.nom.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Catégorie
+                </label>
+
+                {{ produit_form.categorie }}
+
+                {% if produit_form.categorie.errors %}
+                    <div class="text-danger">
+                        {{ produit_form.categorie.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    📷 Image du produit
+                </label>
+
+                {{ produit_form.image }}
+
+                {% if produit_form.image.errors %}
+                    <div class="text-danger">
+                        {{ produit_form.image.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="col-md-3 mb-3">
+
+                <label class="form-label">
+                    Prix d'achat
+                </label>
+
+                {{ produit_form.prix_achat }}
+
+            </div>
+
+
+            <div class="col-md-3 mb-3">
+
+                <label class="form-label">
+                    Prix de vente
+                </label>
+
+                {{ produit_form.prix_vente }}
+
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Unité de mesure
+                </label>
+
+                {{ produit_form.unite_mesure }}
+
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Produit périssable
+                </label>
+
+                <div class="form-check mt-2">
+
+                    {{ produit_form.est_perissable }}
+
+                    <label class="form-check-label">
+                        Oui, ce produit est périssable
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <hr>
+
+
+        <!-- ========================= -->
+        <!-- PRODUCTION -->
+        <!-- ========================= -->
+
+        <h5 class="mb-3">
+            🏭 Production
+        </h5>
+
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    Quantité produite
+                </label>
+
+                {{ form.quantite_produite }}
+
+            </div>
+
+
+            <div class="col-md-6 mb-3">
+
+                <label class="form-label">
+                    📅 Date de péremption
+                </label>
+
+                {{ form.date_peremption }}
+
+                <small class="text-muted">
+                    Obligatoire si le produit est périssable.
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <hr>
+
+
+        <!-- ========================= -->
+        <!-- MATIERES PREMIERES -->
+        <!-- ========================= -->
+
+        <h5 class="mb-3">
+            🥭 Matières / ingrédients utilisés
+        </h5>
+
+        {{ formset.management_form }}
+
+
+        <div id="lignes-transformation">
+
+            {% for ligne_form in formset %}
+
+                <div class="ligne-transformation card mb-3 p-3">
+
+                    <div class="row align-items-end">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Produit / ingrédient
+                            </label>
+
+                            {{ ligne_form.produit }}
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <label class="form-label">
+                                Quantité utilisée
+                            </label>
+
+                            {{ ligne_form.quantite_utilisee }}
+
+                        </div>
+
+
+                        <div class="col-md-2">
+
+                            <button
+                                type="button"
+                                class="btn btn-danger supprimer-ligne w-100">
+
+                                🗑️ Supprimer
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- AJOUT MATIERE -->
+        <!-- ========================= -->
+
+        <button
+            type="button"
+            id="ajouter-ligne"
+            class="btn btn-outline-primary mb-4">
+
+            ➕ Ajouter une matière
+
+        </button>
+
+
+        <br>
+
+
+        <!-- ========================= -->
+        <!-- ACTIONS -->
+        <!-- ========================= -->
+
+        <button
+            type="submit"
+            class="btn btn-success">
+
+            💾 Enregistrer la transformation
+
+        </button>
+
+
+        <a
+            href="{% url 'liste_transformations' %}"
+            class="btn btn-secondary">
+
+            Retour
+
+        </a>
+
+    </form>
+
+</div>
+```
+
+</div>
+
+<!-- ========================= -->
+
+<!-- MODELE POUR NOUVELLE LIGNE -->
+
+<!-- ========================= -->
+
+<template id="ligne-template">
+
+```
+<div class="ligne-transformation card mb-3 p-3">
+
+    <div class="row align-items-end">
+
+        <div class="col-md-6">
+
+            <label class="form-label">
+                Produit / ingrédient
+            </label>
+
+            {{ formset.empty_form.produit }}
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <label class="form-label">
+                Quantité utilisée
+            </label>
+
+            {{ formset.empty_form.quantite_utilisee }}
+
+        </div>
+
+
+        <div class="col-md-2">
+
+            <button
+                type="button"
+                class="btn btn-danger supprimer-ligne w-100">
+
+                🗑️ Supprimer
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</template>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+    
+        const ajouterBouton = document.getElementById("ajouter-ligne");
+        const conteneur = document.getElementById("lignes-transformation");
+        const template = document.getElementById("ligne-template");
+    
+        const totalForms = document.getElementById(
+    "id_lignes-TOTAL_FORMS"
+);
+    
+    
+        ajouterBouton.addEventListener("click", function () {
+    
+            const index = parseInt(totalForms.value);
+    
+            let html = template.innerHTML.replace(
+                /__prefix__/g,
+                index
+            );
+    
+            conteneur.insertAdjacentHTML(
+                "beforeend",
+                html
+            );
+    
+            totalForms.value = index + 1;
+    
+        });
+    
+    
+        conteneur.addEventListener(
+            "click",
+            function (event) {
+    
+                if (
+                    event.target.classList.contains(
+                        "supprimer-ligne"
+                    )
+                ) {
+    
+                    const ligne =
+                        event.target.closest(
+                            ".ligne-transformation"
+                        );
+    
+                    ligne.remove();
+    
+                }
+    
+            }
+        );
+    
+    });
+    
+    </script>
+
+{% endblock %}

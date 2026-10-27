@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}
+Ajouter un produit
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+
+            <h3>
+                ➕ Ajouter un produit
+            </h3>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Nom du produit
+                    </label>
+
+                    {{ form.nom }}
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    {{ form.description }}
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Catégorie
+                    </label>
+
+                    {{ form.categorie }}
+
+                    <a href="{% url 'ajouter_categorie' %}" 
+                       class="btn btn-sm btn-success mt-2">
+
+                        + Nouvelle catégorie
+
+                    </a>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Type produit
+                    </label>
+
+                    {{ form.type_produit }}
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Prix achat
+                    </label>
+
+                    {{ form.prix_achat }}
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Prix vente
+                    </label>
+
+                    {{ form.prix_vente }}
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Unité de mesure
+                    </label>
+
+                    {{ form.unite_mesure }}
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Produit périssable
+                    </label>
+
+                    {{ form.est_perissable }}
+
+                </div>
+
+
+                <button 
+                    type="submit"
+                    class="btn btn-success">
+
+                    Enregistrer
+
+                </button>
+
+
+                <a href="{% url 'liste_produits' %}"
+                   class="btn btn-secondary">
+
+                    Annuler
+
+                </a>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

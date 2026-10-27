@@ -1,0 +1,1045 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | Syllaraga ERP
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- ================================================= -->
+    <!-- EN-TÊTE -->
+    <!-- ================================================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-speedometer2 me-2"
+                   style="color:#008C95;"></i>
+                Tableau de bord
+            </h2>
+
+            <p class="text-muted mb-0">
+                Vue générale de l'activité de Syllaraga ERP
+            </p>
+        </div>
+
+        <div class="text-end">
+
+            <span class="badge rounded-pill px-3 py-2"
+                  style="background:#e8f5f2;color:#2E8B57;">
+
+                <i class="bi bi-circle-fill me-1"
+                   style="font-size:8px;"></i>
+
+                Système opérationnel
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- KPI PRINCIPAUX -->
+    <!-- ================================================= -->
+
+    <div class="row g-4 mb-4">
+                <!-- FOURNISSEURS -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100 dashboard-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Fournisseurs
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ nombre_fournisseurs }}
+                            </h2>
+
+                            <small class="text-muted">
+                                Fournisseurs enregistrés
+                            </small>
+
+                        </div>
+
+                        <div class="kpi-icon"
+                             style="background:#e8f5f2;color:#008C95;">
+
+                            <i class="bi bi-truck"></i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mt-3">
+
+                        <a href="{% url 'liste_fournisseurs' %}"
+                           class="btn btn-sm btn-outline-success">
+
+                            <i class="bi bi-eye me-1"></i>
+                            Voir les fournisseurs
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- PRODUITS -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100 dashboard-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Produits
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ nombre_produits }}
+                            </h2>
+
+                            <small class="text-muted">
+                                Produits enregistrés
+                            </small>
+
+                        </div>
+
+                        <div class="kpi-icon"
+                             style="background:#e8f5f2;color:#008C95;">
+
+                            <i class="bi bi-box-seam"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- VENTES -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100 dashboard-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Ventes
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ nombre_ventes }}
+                            </h2>
+
+                            <small class="text-muted">
+                                Transactions enregistrées
+                            </small>
+
+                        </div>
+
+                        <div class="kpi-icon"
+                             style="background:#e8f5e9;color:#2E8B57;">
+
+                            <i class="bi bi-cart-check"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACHATS -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100 dashboard-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Achats
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ nombre_achats }}
+                            </h2>
+
+                            <small class="text-muted">
+                                Achats fournisseurs
+                            </small>
+
+                        </div>
+
+                        <div class="kpi-icon"
+                             style="background:#fff4e5;color:#8B5A2B;">
+
+                            <i class="bi bi-bag-plus"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CA -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100 dashboard-card">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Chiffre d'affaires
+                            </p>
+
+                            <h3 class="fw-bold mb-0">
+
+                                {{ chiffre_affaires }}
+
+                                <small>FCFA</small>
+
+                            </h3>
+
+                            <small class="text-muted">
+                                Ventes confirmées
+                            </small>
+
+                        </div>
+
+                        <div class="kpi-icon"
+                             style="background:#fff8df;color:#d39e00;">
+
+                            <i class="bi bi-cash-coin"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- ALERTES -->
+    <!-- ================================================= -->
+
+    <div class="row g-4 mb-4">
+
+
+        <!-- STOCK FAIBLE -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="alert-icon bg-warning-subtle text-warning">
+
+                            <i class="bi bi-exclamation-triangle"></i>
+
+                        </div>
+
+                        <div class="ms-3">
+
+                            <div class="text-muted small">
+                                Stocks faibles
+                            </div>
+
+                            <h3 class="fw-bold mb-0">
+
+                                {{ nombre_stocks_faibles }}
+
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                    <a href="{% url 'stocks_faibles' %}"
+                       class="btn btn-sm btn-outline-warning mt-3">
+
+                        Voir les stocks faibles
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RUPTURES -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="alert-icon bg-danger-subtle text-danger">
+
+                            <i class="bi bi-x-circle"></i>
+
+                        </div>
+
+                        <div class="ms-3">
+
+                            <div class="text-muted small">
+                                Ruptures de stock
+                            </div>
+
+                            <h3 class="fw-bold mb-0">
+
+                                {{ nombre_ruptures }}
+
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                    <a href="{% url 'liste_stock' %}"
+                       class="btn btn-sm btn-outline-danger mt-3">
+
+                        Consulter le stock
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PEREMPTION -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="alert-icon bg-danger-subtle text-danger">
+
+                            <i class="bi bi-calendar-x"></i>
+
+                        </div>
+
+                        <div class="ms-3">
+
+                            <div class="text-muted small">
+                                Lots périmés
+                            </div>
+
+                            <h3 class="fw-bold mb-0">
+
+                                {{ nombre_lots_perimes }}
+
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                    <a href="{% url 'lots_perimes' %}"
+                       class="btn btn-sm btn-outline-danger mt-3">
+
+                        Voir les lots
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PEREMPTION PROCHE -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="alert-icon bg-info-subtle text-info">
+
+                            <i class="bi bi-calendar-event"></i>
+
+                        </div>
+
+                        <div class="ms-3">
+
+                            <div class="text-muted small">
+                                Péremptions proches
+                            </div>
+
+                            <h3 class="fw-bold mb-0">
+
+                                {{ nombre_lots_proches }}
+
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                    <a href="{% url 'alertes_peremption' %}"
+                       class="btn btn-sm btn-outline-info mt-3">
+
+                        Voir les alertes
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- FINANCES / TRANSFORMATIONS -->
+    <!-- ================================================= -->
+
+    <div class="row g-4 mb-4">
+
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="text-muted">
+                        Bénéfice estimé
+                    </div>
+
+                    <h2 class="fw-bold mt-2"
+                        style="color:#2E8B57;">
+
+                        {{ benefice }} FCFA
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Chiffre d'affaires − achats réceptionnés
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="text-muted">
+                        Transformations terminées
+                    </div>
+
+                    <h2 class="fw-bold mt-2"
+                        style="color:#008C95;">
+
+                        {{ nombre_transformations }}
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Opérations de production terminées
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="text-muted">
+                        Production totale
+                    </div>
+
+                    <h2 class="fw-bold mt-2"
+                        style="color:#8B5A2B;">
+
+                        {{ quantite_produite }}
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Quantité produite par transformation
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- GRAPHIQUES -->
+    <!-- ================================================= -->
+
+    <div class="row g-4 mb-4">
+
+
+        <!-- EVOLUTION CA -->
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-4">
+
+                        <i class="bi bi-graph-up me-2"
+                           style="color:#008C95;"></i>
+
+                        Évolution du chiffre d'affaires
+
+                    </h5>
+
+                    <div style="height:320px;">
+
+                        <canvas id="ventesMois"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TYPE VENTE -->
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-4">
+
+                        <i class="bi bi-pie-chart me-2"
+                           style="color:#2E8B57;"></i>
+
+                        Répartition des ventes
+
+                    </h5>
+
+                    <div style="height:320px;">
+
+                        <canvas id="ventesType"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- STOCK + TRANSFORMATION -->
+    <!-- ================================================= -->
+
+    <div class="row g-4 mb-4">
+
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-4">
+
+                        <i class="bi bi-boxes me-2"
+                           style="color:#d39e00;"></i>
+
+                        Niveau des stocks faibles
+
+                    </h5>
+
+                    <div style="height:300px;">
+
+                        <canvas id="stockGraphique"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-4">
+
+                        <i class="bi bi-arrow-repeat me-2"
+                           style="color:#2E8B57;"></i>
+
+                        Production par transformation
+
+                    </h5>
+
+                    <div style="height:300px;">
+
+                        <canvas id="transformationGraphique"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- CHART.JS -->
+<!-- ===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* ============================================= */
+    /* EVOLUTION CA */
+    /* ============================================= */
+
+    new Chart(
+        document.getElementById("ventesMois"),
+        {
+            type: "line",
+
+            data: {
+
+                labels: [
+                    {% for vente in ventes_par_mois %}
+                        "{{ vente.mois|date:'M Y' }}",
+                    {% endfor %}
+                ],
+
+                datasets: [{
+
+                    label: "Chiffre d'affaires",
+
+                    data: [
+                        {% for vente in ventes_par_mois %}
+                            {{ vente.total }},
+                        {% endfor %}
+                    ],
+
+                    tension: 0.35,
+
+                    fill: true,
+
+                    borderColor: "#008C95",
+
+                    backgroundColor: "rgba(0,140,149,0.12)",
+
+                    pointRadius: 4
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: true
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+                        beginAtZero: true
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* ============================================= */
+    /* REPARTITION VENTES */
+    /* ============================================= */
+
+    new Chart(
+        document.getElementById("ventesType"),
+        {
+            type: "doughnut",
+
+            data: {
+
+                labels: [
+                    {% for vente in ventes_par_type %}
+                        "{{ vente.type_vente }}",
+                    {% endfor %}
+                ],
+
+                datasets: [{
+
+                    data: [
+                        {% for vente in ventes_par_type %}
+                            {{ vente.total }},
+                        {% endfor %}
+                    ],
+
+                    backgroundColor: [
+                        "#008C95",
+                        "#2E8B57"
+                    ]
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        position: "bottom"
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* ============================================= */
+    /* STOCK FAIBLE */
+    /* ============================================= */
+
+    new Chart(
+        document.getElementById("stockGraphique"),
+        {
+            type: "bar",
+
+            data: {
+
+                labels: [
+                    {% for stock in stock_graphique %}
+                        "{{ stock.produit }}",
+                    {% endfor %}
+                ],
+
+                datasets: [{
+
+                    label: "Stock disponible",
+
+                    data: [
+                        {% for stock in stock_graphique %}
+                            {{ stock.quantite }},
+                        {% endfor %}
+                    ],
+
+                    backgroundColor: "#d39e00",
+
+                    borderRadius: 6
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+                        beginAtZero: true
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* ============================================= */
+    /* TRANSFORMATIONS */
+    /* ============================================= */
+
+    new Chart(
+        document.getElementById("transformationGraphique"),
+        {
+            type: "bar",
+
+            data: {
+
+                labels: [
+                    {% for transformation in transformations_graphique %}
+                        "{{ transformation.produit__nom }}",
+                    {% endfor %}
+                ],
+
+                datasets: [{
+
+                    label: "Quantité produite",
+
+                    data: [
+                        {% for transformation in transformations_graphique %}
+                            {{ transformation.total }},
+                        {% endfor %}
+                    ],
+
+                    backgroundColor: "#2E8B57",
+
+                    borderRadius: 6
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+                        beginAtZero: true
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+});
+
+</script>
+
+
+<!-- ===================================================== -->
+<!-- PETIT STYLE DU DASHBOARD -->
+<!-- ===================================================== -->
+
+<style>
+
+.dashboard-card {
+
+    border-radius: 16px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+.dashboard-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.10) !important;
+
+}
+
+
+.kpi-icon {
+
+    width: 54px;
+
+    height: 54px;
+
+    border-radius: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 25px;
+
+}
+
+
+.alert-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 22px;
+
+}
+
+.card {
+
+    border-radius: 16px;
+
+}
+
+</style>
+
+{% endblock %}

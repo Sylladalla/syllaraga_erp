@@ -1,0 +1,11 @@
+Django>=5.2,<5.3
+gunicorn
+whitenoise
+psycopg[binary]
+Pillow>=10.0.0
+reportlab==5.0.0
+paydunya==1.0.7
+requests
+PyYAML
+africastalking==2.0.3
+python-dotenv

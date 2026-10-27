@@ -1,0 +1,97 @@
+
+
+{% extends "base_boutique.html" %}
+
+{% block title %}Nouveau mot de passe | Syllaraga{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+
+            <div class="text-center mb-4">
+                <h1 class="fw-bold">🌿 Syllaraga</h1>
+                <p class="text-muted">Retrouvez l'accès à votre compte.</p>
+            </div>
+
+            <div class="card border-0 shadow rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    {% if validlink %}
+                        <h2 class="h4 text-center mb-3">
+                            Choisir un nouveau mot de passe
+                        </h2>
+
+                        <p class="text-muted text-center mb-4">
+                            Saisissez votre nouveau mot de passe, puis confirmez-le.
+                        </p>
+
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags|default:'info' }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            {{ form.non_field_errors }}
+
+                            {% for field in form %}
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold"
+                                           for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                    </label>
+
+                                    {{ field }}
+
+                                    {% if field.help_text %}
+                                        <div class="form-text">
+                                            {{ field.help_text|safe }}
+                                        </div>
+                                    {% endif %}
+
+                                    {% for error in field.errors %}
+                                        <div class="text-danger small">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+
+                            <button type="submit"
+                                    class="btn btn-success w-100 py-2">
+                                Enregistrer mon nouveau mot de passe
+                            </button>
+                        </form>
+
+                    {% else %}
+                        <h2 class="h4 text-center mb-3">
+                            Lien invalide ou expiré
+                        </h2>
+
+                        <p class="text-muted text-center">
+                            Ce lien de réinitialisation n'est plus valide.
+                            Demandez-en un nouveau pour continuer.
+                        </p>
+
+                        <a href="{% url 'mot_de_passe_oublie' %}"
+                           class="btn btn-success w-100">
+                            Demander un nouveau lien
+                        </a>
+                    {% endif %}
+
+                    <p class="text-center mt-4 mb-0">
+                        <a href="{% url 'connexion_client' %}">
+                            Retour à la connexion
+                        </a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

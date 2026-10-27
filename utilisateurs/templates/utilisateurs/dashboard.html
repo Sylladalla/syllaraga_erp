@@ -1,0 +1,21 @@
+
+{% extends "base.html" %}
+
+{% block title %}Tableau de bord - Syllaraga ERP{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow-sm border-0 p-4">
+        <h1 class="fw-bold text-success">
+            <i class="bi bi-speedometer2"></i> Espace Gestion Syllaraga
+        </h1>
+        <p class="text-muted">
+            Bienvenue dans votre espace professionnel, <strong>{{ request.user.username }}</strong>.
+        </p>
+        <hr>
+        <div class="alert alert-info">
+            Le serveur fonctionne correctement. Vous pouvez maintenant réaliser vos captures d'écran pour le document.
+        </div>
+    </div>
+</div>
+{% endblock %}

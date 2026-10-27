@@ -1,0 +1,76 @@
+
+
+{% extends "base_boutique.html" %}
+
+{% block title %}Mot de passe oublié | Syllaraga{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+
+            <div class="text-center mb-4">
+                <h1 class="fw-bold">🌿 Syllaraga</h1>
+                <p class="text-muted">Votre boutique de produits naturels</p>
+            </div>
+
+            <div class="card border-0 shadow rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <h2 class="h4 text-center mb-3">
+                        Mot de passe oublié ?
+                    </h2>
+
+                    <p class="text-muted text-center mb-4">
+                        Saisissez l'adresse e-mail utilisée lors de votre inscription.
+                        Nous vous aiderons à retrouver l'accès à votre compte.
+                    </p>
+
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags|default:'info' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
+                    <form method="post"
+                          action="{% url 'mot_de_passe_oublie' %}">
+                        {% csrf_token %}
+
+                        {{ form.non_field_errors }}
+
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold"
+                                       for="{{ field.id_for_label }}">
+                                    {{ field.label }}
+                                </label>
+
+                                {{ field }}
+
+                                {% for error in field.errors %}
+                                    <div class="text-danger small">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        <button type="submit"
+                                class="btn btn-success w-100 py-2">
+                            Recevoir le lien
+                        </button>
+                    </form>
+
+                    <p class="text-center mt-4 mb-0">
+                        <a href="{% url 'connexion_client' %}">
+                            Retour à la connexion
+                        </a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

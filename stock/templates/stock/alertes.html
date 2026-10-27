@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}
+Alertes de péremption
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+        📅 Alertes de péremption
+    </h2>
+    <!-- TEST TEMPORAIRE -->
+    <p>Aujourd'hui : {{ today }}</p>
+<p>Limite : {{ limite }}</p>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-danger">
+
+            <tr>
+
+                <th>Lot</th>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Date de péremption</th>
+                <th>État</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for lot in lots_alertes %}
+
+            <tr>
+
+                <td>{{ lot.numero_lot }}</td>
+
+                <td>{{ lot.produit.nom }}</td>
+
+                <td>{{ lot.quantite }}</td>
+
+                <td>{{ lot.date_peremption }}</td>
+
+                <td>
+
+                    {% if lot.date_peremption < today %}
+
+                        <span class="badge bg-danger">
+                            🔴 Périmé
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-warning text-dark">
+                            🟡 Expire bientôt
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+
+                <td colspan="5" class="text-center">
+
+                    Aucun produit proche de la péremption.
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

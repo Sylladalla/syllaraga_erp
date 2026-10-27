@@ -1,0 +1,648 @@
+
+{% extends "base_boutique.html" %}
+{% load static %}
+
+{% block title %}Syllaraga — Produits naturels{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Garde ici le CSS actuel de ta boutique */
+    body {
+            background:#f8faf9;
+            font-family: Arial, sans-serif;
+        }
+
+        /* ============================= */
+        /* NAVBAR */
+        /* ============================= */
+
+        .client-navbar {
+            background:#008C95;
+            padding:15px 0;
+        }
+
+        .client-navbar .navbar-brand {
+            font-size:20px;
+            font-weight:500;
+        }
+
+        .client-navbar .nav-link {
+            color:white;
+            margin-left:15px;
+        }
+
+        .client-navbar .nav-link:hover {
+            color:#d8fff0;
+        }
+
+
+        /* ============================= */
+        /* HERO */
+        /* ============================= */
+
+        .hero {
+            min-height:470px;
+
+            background:
+                linear-gradient(
+                    rgba(0,70,55,0.55),
+                    rgba(0,70,55,0.55)
+                ),
+                url("{% static 'images/hero-produits.jpg' %}");
+
+            background-size:cover;
+            background-position:center;
+
+            display:flex;
+            align-items:center;
+
+            color:white;
+
+            border-radius:0 0 30px 30px;
+        }
+
+        .hero-content {
+            max-width:650px;
+        }
+
+        .hero h1 {
+            font-size:52px;
+            font-weight:800;
+        }
+
+        .hero p {
+            font-size:19px;
+            line-height:1.7;
+        }
+
+        .hero-btn {
+            background:#2E8B57;
+            border:none;
+            padding:13px 28px;
+            border-radius:30px;
+            color:white;
+            font-weight:600;
+        }
+
+        .hero-btn:hover {
+            background:#246f46;
+            color:white;
+        }
+
+
+        /* ============================= */
+        /* SECTION */
+        /* ============================= */
+
+        .section-title {
+            font-weight:800;
+            color:#164d37;
+        }
+
+
+        /* ============================= */
+        /* CATEGORIES */
+        /* ============================= */
+
+        .category-card {
+            background:white;
+            border:none;
+            border-radius:18px;
+            padding:22px;
+            text-align:center;
+            box-shadow:0 4px 15px rgba(0,0,0,0.07);
+            transition:0.25s;
+        }
+
+        .category-card:hover {
+            transform:translateY(-5px);
+            box-shadow:0 8px 22px rgba(0,0,0,0.12);
+        }
+
+        .category-icon {
+            width:55px;
+            height:55px;
+
+            margin:auto;
+            margin-bottom:12px;
+
+            border-radius:50%;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            background:#e8f5ef;
+            color:#2E8B57;
+
+            font-size:25px;
+        }
+        .category-card {
+            width: 100%;
+            cursor: pointer;
+            font: inherit;
+            color: inherit;
+        }
+        
+        .category-card:focus-visible {
+            outline: 3px solid #008C95;
+            outline-offset: 3px;
+        }
+        
+        .category-card.category-active {
+            border: 2px solid #2E8B57;
+            background: #e8f5ef;
+        }
+
+
+        /* ============================= */
+        /* PRODUITS */
+        /* ============================= */
+
+        .product-card {
+            background:white;
+            border:none;
+            border-radius:20px;
+            overflow:hidden;
+
+            box-shadow:0 4px 15px rgba(0,0,0,0.07);
+
+            transition:0.25s;
+        }
+
+        .product-card:hover {
+            transform:translateY(-6px);
+            box-shadow:0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .product-image {
+            height:210px;
+            width:100%;
+            object-fit:cover;
+        }
+
+        .product-placeholder {
+            height:210px;
+
+            background:#eaf5ef;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            color:#2E8B57;
+
+            font-size:55px;
+        }
+
+        .product-name {
+            font-weight:700;
+            color:#193c2b;
+        }
+
+        .product-price {
+            font-size:20px;
+            font-weight:800;
+            color:#2E8B57;
+        }
+
+        .btn-product {
+            background:#2E8B57;
+            color:white;
+            border:none;
+            border-radius:25px;
+            padding:9px 18px;
+        }
+
+        .btn-product:hover {
+            background:#246f46;
+            color:white;
+        }
+
+
+        /* ============================= */
+        /* FOOTER */
+        /* ============================= */
+
+        footer {
+            background:#164d37;
+            color:white;
+            margin-top:70px;
+        }
+</style>
+{% endblock %}
+
+{% block content %}
+
+</head>
+
+
+<body>
+
+
+    
+
+
+<!-- ===================================== -->
+<!-- HERO -->
+<!-- ===================================== -->
+
+<section class="hero">
+
+    <div class="container">
+
+        <div class="hero-content">
+
+            <span
+                class="badge rounded-pill bg-light text-success px-3 py-2 mb-3"
+            >
+
+                🌿 Produits frais & naturels
+
+            </span>
+
+
+            <h1>
+
+                Le goût naturel,
+                <br>
+
+                directement chez vous.
+
+            </h1>
+
+
+            <p class="mt-3">
+
+                Découvrez nos fruits, ingrédients et produits
+                transformés avec soin par Syllaraga.
+
+            </p>
+
+
+            <a
+                href="#produits"
+                class="btn hero-btn mt-3"
+            >
+
+                <i class="bi bi-bag-heart me-2"></i>
+
+                Découvrir nos produits
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===================================== -->
+<!-- CATEGORIES -->
+<!-- ===================================== -->
+
+
+
+<section class="container py-5" id="categories">
+    <div class="text-center mb-4">
+        <small class="text-success fw-bold">NOS CATÉGORIES</small>
+        <h2 class="section-title">Découvrez notre univers</h2>
+        <p class="text-muted">
+            Cliquez sur une catégorie pour découvrir ses produits.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Bouton pour afficher tous les produits -->
+        <div class="col-6 col-md-4 col-lg-3">
+            <button
+                type="button"
+                class="category-card category-filter w-100 h-100 category-active"
+                data-category="all"
+                aria-pressed="true">
+
+                <div class="category-icon">
+                    <i class="bi bi-grid"></i>
+                </div>
+
+                <h6 class="fw-bold mb-1">Tous les produits</h6>
+                <small class="text-muted">Voir toute la boutique</small>
+            </button>
+        </div>
+
+        <!-- Boutons des catégories -->
+        {% for categorie in categories %}
+        <div class="col-6 col-md-4 col-lg-3">
+            <button
+                type="button"
+                class="category-card category-filter w-100 h-100"
+                data-category="{{ categorie.id }}"
+                aria-pressed="false">
+
+                <div class="category-icon">
+                    <i class="bi bi-basket2"></i>
+                </div>
+
+                <h6 class="fw-bold mb-1">{{ categorie.nom }}</h6>
+
+                {% if categorie.description %}
+                <small class="text-muted">
+                    {{ categorie.description|truncatechars:55 }}
+                </small>
+                {% endif %}
+            </button>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center text-muted">
+            Aucune catégorie disponible.
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+
+
+
+<!-- ===================================== -->
+<!-- PRODUITS -->
+<!-- ===================================== -->
+
+<section
+    class="container py-4"
+    id="produits"
+>
+
+    <div class="d-flex justify-content-between align-items-end mb-4">
+
+        <div>
+
+            <small class="text-success fw-bold">
+                NOTRE SÉLECTION
+            </small>
+
+            <h2 class="section-title mb-0">
+                Produits disponibles
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        {% for produit in produits %}
+
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 product-item"
+        data-category="{{ produit.categorie_id }}">
+
+
+            <div class="product-card h-100">
+
+
+                {% if produit.image %}
+
+                    <img
+                        src="{{ produit.image.url }}"
+                        alt="{{ produit.nom }}"
+                        class="product-image"
+                    >
+
+                {% else %}
+
+                    <div class="product-placeholder">
+
+                        <i class="bi bi-basket2"></i>
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="p-3">
+
+
+                    <small class="text-muted">
+
+                        {{ produit.categorie.nom }}
+
+                    </small>
+
+
+                    <h5 class="product-name mt-1">
+
+                        {{ produit.nom }}
+
+                    </h5>
+
+
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+
+                        <div>
+
+                            <span class="product-price">
+
+                                {{ produit.prix_vente }}
+
+                            </span>
+
+                            <small class="text-muted">
+
+                                FCFA
+
+                            </small>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'ajouter_au_panier' produit.id %}"
+                            class="btn btn-product"
+                        >
+
+                            <i class="bi bi-cart-plus"></i>
+
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {% empty %}
+
+        <div class="col-12">
+
+            <div class="text-center py-5">
+
+                <i
+                    class="bi bi-basket"
+                    style="font-size:55px;color:#adb5bd;"
+                ></i>
+
+                <h4 class="mt-3 text-muted">
+
+                    Aucun produit disponible
+
+                </h4>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+
+<!-- ===================================== -->
+<!-- FOOTER -->
+<!-- ===================================== -->
+
+<footer class="py-5">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <h4 class="fw-bold">
+
+                    <i class="bi bi-shop me-2"></i>
+
+                    SYLLARAGA
+
+                </h4>
+
+                <p class="mb-0 text-white-50">
+
+                    Des produits frais, naturels et transformés
+                    avec soin.
+
+                </p>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <h6 class="fw-bold">
+                    Navigation
+                </h6>
+
+                <a
+                    href="{% url 'accueil' %}"
+                    class="text-white-50 text-decoration-none d-block mb-2"
+                >
+                    Accueil
+                </a>
+
+                <a
+                    href="{% url 'panier' %}"
+                    class="text-white-50 text-decoration-none d-block mb-2"
+                >
+                    Panier
+                </a>
+
+                <a
+                    href="{% url 'mes_commandes' %}"
+                    class="text-white-50 text-decoration-none d-block"
+                >
+                    Mes commandes
+                </a>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <h6 class="fw-bold">
+                    Syllaraga
+                </h6>
+
+                <p class="text-white-50 small mb-0">
+
+                    Vente de produits alimentaires
+                    en boutique et en ligne.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <hr class="border-light opacity-25 my-4">
+
+
+        <div class="text-center text-white-50 small">
+
+            © 2026 Syllaraga — Tous droits réservés.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const boutons = document.querySelectorAll(".category-filter");
+        const produits = document.querySelectorAll(".product-item");
+    
+        boutons.forEach(function (bouton) {
+            bouton.addEventListener("click", function () {
+                const categorieChoisie = this.dataset.category;
+    
+                boutons.forEach(function (b) {
+                    b.classList.remove("category-active");
+                    b.setAttribute("aria-pressed", "false");
+                });
+    
+                this.classList.add("category-active");
+                this.setAttribute("aria-pressed", "true");
+    
+                produits.forEach(function (produit) {
+                    const categorieProduit = produit.dataset.category;
+    
+                    produit.style.display =
+                        categorieChoisie === "all" ||
+                        categorieProduit === categorieChoisie
+                            ? ""
+                            : "none";
+                });
+    
+                document.getElementById("produits")
+                    .scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+            });
+        });
+    });
+    </script>
+
+
+</body>
+
+</html>
+{% endblock content %}

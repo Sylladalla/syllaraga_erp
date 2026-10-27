@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+Effectuer un paiement
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+```
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+
+        <h3>
+            💳 Paiement de la vente #{{ vente.id }}
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+            Client :
+            <strong>{{ vente.client.nom }}</strong>
+        </p>
+
+        <p>
+            Montant à payer :
+            <strong>{{ vente.montant_total }} FCFA</strong>
+        </p>
+
+        <p>
+            Statut actuel :
+            <strong>{{ paiement.get_statut_display }}</strong>
+        </p>
+
+        <hr>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Mode de paiement
+                </label>
+
+                {{ form.mode_paiement }}
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-success">
+
+                💰 Effectuer le paiement
+
+            </button>
+
+            <a href="{% url 'detail_vente' vente.id %}"
+               class="btn btn-secondary">
+
+                Retour
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

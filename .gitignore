@@ -1,0 +1,26 @@
+# Environnement Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Secrets et variables d'environnement
+.env
+.env.*
+!.env.example
+
+# Base de données locale
+db.sqlite3
+db.sqlite3-*
+
+# Fichiers utilisateurs et médias privés
+media/
+
+# Fichiers générés
+staticfiles/
+*.log
+.DS_Store
+
+# Configuration des éditeurs
+.vscode/
+.idea/

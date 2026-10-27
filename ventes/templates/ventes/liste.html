@@ -1,0 +1,444 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}
+Gestion des ventes | Syllaraga ERP
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .ventes-page {
+        padding: 10px 0 30px;
+    }
+
+    .ventes-header {
+        background: linear-gradient(135deg, #2E8B57, #247447);
+        color: white;
+        padding: 26px 28px;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        box-shadow: 0 5px 18px rgba(46, 139, 87, .15);
+    }
+
+    .ventes-header h2 {
+        font-weight: 750;
+        margin-bottom: 7px;
+    }
+
+    .ventes-header p {
+        margin: 0;
+        opacity: .9;
+    }
+
+    .btn-nouvelle-vente {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 16px;
+        border-radius: 9px;
+        background: white;
+        color: #247447;
+        border: 1px solid white;
+        text-decoration: none;
+        font-weight: 650;
+        transition: .2s ease;
+        white-space: nowrap;
+    }
+
+    .btn-nouvelle-vente:hover {
+        background: #edf8f0;
+        color: #185b34;
+        transform: translateY(-1px);
+    }
+
+    .ventes-messages .alert {
+        border-radius: 10px;
+        margin-bottom: 18px;
+    }
+
+    .ventes-card {
+        background: white;
+        border: 1px solid #e7eee9;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, .035);
+    }
+
+    .ventes-card-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #e8eee9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .ventes-card-header h5 {
+        color: #26382c;
+        font-weight: 750;
+        margin: 0;
+    }
+
+    .ventes-count {
+        background: #eaf6ee;
+        color: #247447;
+        border-radius: 20px;
+        padding: 7px 12px;
+        font-size: .82rem;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .ventes-table {
+        margin: 0;
+        vertical-align: middle;
+    }
+
+    .ventes-table thead th {
+        background: #edf7ef;
+        color: #286b43;
+        font-size: .80rem;
+        font-weight: 750;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+        padding: 15px 16px;
+        border-bottom: 1px solid #dceade;
+        white-space: nowrap;
+    }
+
+    .ventes-table tbody td {
+        padding: 16px;
+        border-color: #f0f2f0;
+    }
+
+    .ventes-table tbody tr:hover {
+        background: #f8fcf9;
+    }
+
+    .vente-reference {
+        color: #247447;
+        font-weight: 750;
+    }
+
+    .vente-client {
+        color: #28382d;
+        font-weight: 650;
+    }
+
+    .vente-type {
+        display: inline-block;
+        background: #eef2f5;
+        color: #4d5b66;
+        padding: 6px 9px;
+        border-radius: 7px;
+        font-size: .82rem;
+        font-weight: 650;
+    }
+
+    .vente-date {
+        color: #68756c;
+        white-space: nowrap;
+        font-size: .9rem;
+    }
+
+    .vente-montant {
+        color: #247447;
+        font-weight: 750;
+        white-space: nowrap;
+    }
+
+    .vente-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 8px;
+        font-size: .78rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .vente-status-brouillon {
+        color: #805b00;
+        background: #fff2cc;
+    }
+
+    .vente-status-confirmee {
+        color: #17683a;
+        background: #dff4e5;
+    }
+
+    .vente-status-annulee {
+        color: #a52b36;
+        background: #fbe5e7;
+    }
+
+    .btn-detail-vente {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 11px;
+        border: 1px solid #d5e9dc;
+        border-radius: 8px;
+        background: #eaf6ee;
+        color: #247447;
+        text-decoration: none;
+        font-size: .85rem;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .btn-detail-vente:hover {
+        background: #2E8B57;
+        border-color: #2E8B57;
+        color: white;
+    }
+
+    .ventes-empty {
+        padding: 50px 20px;
+        text-align: center;
+        color: #748078;
+    }
+
+    .ventes-empty-icon {
+        font-size: 2.8rem;
+        color: #9ebca7;
+        margin-bottom: 14px;
+    }
+
+    .ventes-empty h5 {
+        color: #344238;
+        font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+        .ventes-header {
+            padding: 20px;
+        }
+
+        .ventes-header .header-action {
+            margin-top: 18px;
+        }
+
+        .ventes-card-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .ventes-table thead th,
+        .ventes-table tbody td {
+            padding: 12px;
+        }
+    }
+</style>
+
+<div class="container-fluid ventes-page">
+
+    <!-- EN-TÊTE -->
+    <div class="ventes-header">
+
+        <div class="d-flex flex-column flex-md-row
+                    justify-content-between align-items-md-center">
+
+            <div>
+                <h2>
+                    <i class="bi bi-cart-check me-2"></i>
+                    Gestion des ventes
+                </h2>
+
+                <p>
+                    Consultez les ventes en boutique et les commandes en ligne.
+                </p>
+            </div>
+
+            <div class="header-action">
+                <a href="{% url 'ajouter_vente' %}"
+                   class="btn-nouvelle-vente">
+
+                    <i class="bi bi-plus-circle"></i>
+                    Nouvelle vente
+
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MESSAGES DJANGO -->
+    {% if messages %}
+
+        <div class="ventes-messages">
+
+            {% for message in messages %}
+
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                     role="alert">
+
+                    {{ message }}
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Fermer"></button>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+    <!-- HISTORIQUE DES VENTES -->
+    <div class="ventes-card">
+
+        <div class="ventes-card-header">
+
+            <h5>
+                <i class="bi bi-receipt me-2 text-success"></i>
+                Historique des ventes
+            </h5>
+
+            <span class="ventes-count">
+                {{ ventes|length }} vente(s)
+            </span>
+
+        </div>
+
+        {% if ventes %}
+
+            <div class="table-responsive">
+
+                <table class="table ventes-table">
+
+                    <thead>
+                        <tr>
+                            <th>Référence</th>
+                            <th>Client</th>
+                            <th>Type de vente</th>
+                            <th>Date</th>
+                            <th>Montant total</th>
+                            <th>Statut</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for vente in ventes %}
+
+                            <tr>
+
+                                <td>
+                                    <span class="vente-reference">
+                                        #{{ vente.id }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="vente-client">
+                                        {{ vente.client.nom }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="vente-type">
+                                        {{ vente.get_type_vente_display }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="vente-date">
+                                        {{ vente.date_vente|date:"d/m/Y H:i" }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="vente-montant">
+                                        {{ vente.montant_total|floatformat:0 }} FCFA
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    {% if vente.statut == "BROUILLON" %}
+
+                                        <span class="vente-status vente-status-brouillon">
+                                            <i class="bi bi-pencil-square"></i>
+                                            Brouillon
+                                        </span>
+
+                                    {% elif vente.statut == "CONFIRMEE" %}
+
+                                        <span class="vente-status vente-status-confirmee">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            Confirmée
+                                        </span>
+
+                                    {% elif vente.statut == "ANNULEE" %}
+
+                                        <span class="vente-status vente-status-annulee">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                            Annulée
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td class="text-center">
+
+                                    <a href="{% url 'detail_vente' vente.id %}"
+                                       class="btn-detail-vente">
+
+                                        <i class="bi bi-eye"></i>
+                                        Voir le détail
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="ventes-empty">
+
+                <div class="ventes-empty-icon">
+                    <i class="bi bi-cart-x"></i>
+                </div>
+
+                <h5>Aucune vente enregistrée</h5>
+
+                <p class="mb-4">
+                    Les ventes créées apparaîtront ici.
+                </p>
+
+                <a href="{% url 'ajouter_vente' %}"
+                   class="btn btn-success">
+
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Créer une vente
+
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

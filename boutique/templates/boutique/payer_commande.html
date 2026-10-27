@@ -1,0 +1,200 @@
+
+{% extends "base_boutique.html" %}
+
+{% block title %}Finaliser mon paiement - Syllaraga ERP{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            <div class="mb-4">
+                <a href="{% url 'detail_commande' commande.id %}"
+                   class="text-decoration-none">
+                    ← Retour à ma commande
+                </a>
+                <h1 class="mt-3 fw-bold">Finaliser mon paiement</h1>
+                <p class="text-muted">
+                    Commande n°{{ commande.id }} — Syllaraga
+                </p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close"
+                                data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3">Récapitulatif de la commande</h4>
+
+                    <p>
+                        <strong>Client :</strong>
+                        {{ client.prenom }} {{ client.nom }}
+                    </p>
+
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Prix unitaire</th>
+                                    <th>Quantité</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ligne in commande.lignes.all %}
+                                <tr>
+                                    <td>{{ ligne.produit.nom }}</td>
+                                    <td>{{ ligne.prix_unitaire }} FCFA</td>
+                                    <td>{{ ligne.quantite }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-muted">
+                                        Aucun produit dans cette commande.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="border-top pt-3 mt-3 d-flex
+                                justify-content-between align-items-center">
+                        <span class="fw-semibold">Total à payer</span>
+                        <span class="fs-3 fw-bold text-success">
+                            {{ commande.montant_total }} FCFA
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-2">Choisir un moyen de paiement</h4>
+                    <p class="text-muted mb-4">
+                        Sélectionne ton moyen de paiement pour continuer.
+                    </p>
+
+                    <form method="post"
+                          action="{% url 'payer_commande' commande.id %}">
+                        {% csrf_token %}
+
+                        
+                        
+                       
+<label class="payment-option d-flex align-items-center gap-3 p-3 mb-3 rounded border">
+    <input type="radio" name="mode_paiement"
+           value="ORANGE_MONEY" required>
+    <img src="/static/images/paiements/orange-money.png"
+         alt="Orange Money" class="payment-logo">
+    <div>
+        <strong>Orange Money</strong>
+        <div class="small text-muted">Paiement mobile via PayDunya</div>
+    </div>
+</label>
+
+<label class="payment-option d-flex align-items-center gap-3 p-3 mb-3 rounded border">
+    <input type="radio" name="mode_paiement"
+           value="MOOV_MONEY">
+    <img src="/static/images/paiements/moov-money.png"
+         alt="Moov Money" class="payment-logo">
+    <div>
+        <strong>Moov Money</strong>
+        <div class="small text-muted">Paiement mobile via PayDunya</div>
+    </div>
+</label>
+
+<label class="payment-option d-flex align-items-center gap-3 p-3 mb-3 rounded border">
+    <input type="radio" name="mode_paiement"
+           value="CARTE">
+    <div class="payment-card-logos">
+        <img src="/static/images/paiements/visa.png"
+             alt="Visa" class="payment-logo">
+        <img src="/static/images/paiements/mastercard.png"
+             alt="Mastercard" class="payment-logo">
+    </div>
+    <div>
+        <strong>Carte bancaire</strong>
+        <div class="small text-muted">Visa / Mastercard, selon disponibilité</div>
+    </div>
+</label>
+
+<label class="payment-option d-flex align-items-center gap-3 p-3 mb-4 rounded border">
+    <input type="radio" name="mode_paiement"
+           value="ESPECES">
+    <span class="payment-cash-icon">💵</span>
+    <div>
+        <strong>Paiement en espèces</strong>
+        <div class="small text-muted">
+            Selon les modalités de livraison de la boutique
+        </div>
+    </div>
+</label>
+
+                        
+
+                        <button type="submit"
+                                class="btn btn-success btn-lg w-100">
+                            Continuer le paiement
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <p class="small text-muted text-center mt-4">
+                Le paiement en ligne reste en attente tant que sa confirmation
+                n'a pas été vérifiée.
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .payment-option {
+        cursor: pointer;
+        transition: border-color .2s, background-color .2s;
+    }
+
+    .payment-option:hover {
+        border-color: #198754 !important;
+        background-color: #f4fbf6;
+    }
+
+    .payment-option input {
+        width: 18px;
+        height: 18px;
+        accent-color: #198754;
+    }
+    .payment-logo {
+    width: 64px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.payment-card-logos {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.payment-card-logos .payment-logo {
+    width: 48px;
+}
+
+.payment-cash-icon {
+    width: 64px;
+    text-align: center;
+    font-size: 30px;
+    flex-shrink: 0;
+}
+</style>
+{% endblock %}

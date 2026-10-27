@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}
+Nouvel utilisateur
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">
+                👤 Nouvel utilisateur
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        Veuillez corriger les erreurs.
+                    </div>
+                {% endif %}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Nom d'utilisateur
+                        </label>
+                        {{ form.username }}
+                        {{ form.username.errors }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Email
+                        </label>
+                        {{ form.email }}
+                        {{ form.email.errors }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Prénom
+                        </label>
+                        {{ form.first_name }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Nom
+                        </label>
+                        {{ form.last_name }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Téléphone
+                        </label>
+                        {{ form.telephone }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Rôle
+                        </label>
+                        {{ form.role }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Mot de passe
+                        </label>
+                        {{ form.password }}
+                        {{ form.password.errors }}
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <button type="submit"
+                        class="btn btn-success">
+                    💾 Créer l'utilisateur
+                </button>
+
+                <a href="{% url 'liste_utilisateurs' %}"
+                   class="btn btn-secondary">
+                    ← Retour
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

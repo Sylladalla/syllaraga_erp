@@ -1,0 +1,426 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}
+Transformations | Syllaraga ERP
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .transform-page {
+        padding: 10px 0 30px;
+    }
+
+    .transform-header {
+        background: linear-gradient(135deg, #2E8B57, #247447);
+        color: white;
+        padding: 26px 28px;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        box-shadow: 0 5px 18px rgba(46, 139, 87, .15);
+    }
+
+    .transform-header h2 {
+        font-weight: 750;
+        margin-bottom: 7px;
+    }
+
+    .transform-header p {
+        margin: 0;
+        opacity: .9;
+    }
+
+    .btn-new-transform {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 16px;
+        border-radius: 9px;
+        background: white;
+        color: #247447;
+        border: 1px solid white;
+        text-decoration: none;
+        font-weight: 650;
+        transition: .2s ease;
+        white-space: nowrap;
+    }
+
+    .btn-new-transform:hover {
+        background: #edf8f0;
+        color: #185b34;
+        transform: translateY(-1px);
+    }
+
+    .transform-card {
+        background: white;
+        border: 1px solid #e7eee9;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, .035);
+    }
+
+    .transform-card-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #e8eee9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .transform-card-header h5 {
+        color: #26382c;
+        font-weight: 750;
+        margin: 0;
+    }
+
+    .transform-count {
+        background: #eaf6ee;
+        color: #247447;
+        border-radius: 20px;
+        padding: 7px 12px;
+        font-size: .82rem;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .transform-table {
+        margin: 0;
+        vertical-align: middle;
+    }
+
+    .transform-table thead th {
+        background: #edf7ef;
+        color: #286b43;
+        font-size: .80rem;
+        font-weight: 750;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+        padding: 15px 16px;
+        border-bottom: 1px solid #dceade;
+        white-space: nowrap;
+    }
+
+    .transform-table tbody td {
+        padding: 16px;
+        border-color: #f0f2f0;
+    }
+
+    .transform-table tbody tr:hover {
+        background: #f8fcf9;
+    }
+
+    .transform-product {
+        font-weight: 700;
+        color: #28382d;
+    }
+
+    .transform-quantity {
+        font-weight: 750;
+        color: #247447;
+        white-space: nowrap;
+    }
+
+    .transform-date {
+        color: #68756c;
+        white-space: nowrap;
+        font-size: .9rem;
+    }
+
+    .transform-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 8px;
+        font-size: .78rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .status-finished {
+        color: #17683a;
+        background: #dff4e5;
+    }
+
+    .status-cancelled {
+        color: #a52b36;
+        background: #fbe5e7;
+    }
+
+    .status-draft {
+        color: #805b00;
+        background: #fff2cc;
+    }
+
+    .btn-transform-detail {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 11px;
+        border: 1px solid #d5e9dc;
+        border-radius: 8px;
+        background: #eaf6ee;
+        color: #247447;
+        text-decoration: none;
+        font-size: .85rem;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .btn-transform-detail:hover {
+        background: #2E8B57;
+        border-color: #2E8B57;
+        color: white;
+    }
+
+    .transform-empty {
+        padding: 50px 20px;
+        text-align: center;
+        color: #748078;
+    }
+
+    .transform-empty-icon {
+        font-size: 2.8rem;
+        color: #9ebca7;
+        margin-bottom: 14px;
+    }
+
+    .transform-empty h5 {
+        color: #344238;
+        font-weight: 700;
+    }
+
+    .transform-empty .btn {
+        background: #2E8B57;
+        border-color: #2E8B57;
+        border-radius: 9px;
+        padding: 10px 15px;
+        font-weight: 600;
+    }
+
+    .transform-empty .btn:hover {
+        background: #247447;
+    }
+
+    .transform-messages .alert {
+        border-radius: 10px;
+        margin-bottom: 18px;
+    }
+
+    @media (max-width: 768px) {
+        .transform-header {
+            padding: 20px;
+        }
+
+        .transform-header .header-action {
+            margin-top: 18px;
+        }
+
+        .transform-card-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .transform-table thead th,
+        .transform-table tbody td {
+            padding: 12px;
+        }
+    }
+</style>
+
+<div class="container-fluid transform-page">
+
+    <!-- EN-TÊTE -->
+    <div class="transform-header">
+
+        <div class="d-flex flex-column flex-md-row
+                    justify-content-between align-items-md-center">
+
+            <div>
+                <h2>
+                    <i class="bi bi-arrow-repeat me-2"></i>
+                    Gestion des transformations
+                </h2>
+
+                <p>
+                    Suivez la production de vos produits transformés.
+                </p>
+            </div>
+
+            <div class="header-action">
+                <a href="{% url 'creer_transformation' %}"
+                   class="btn-new-transform">
+
+                    <i class="bi bi-plus-circle"></i>
+                    Nouvelle transformation
+
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MESSAGES DJANGO -->
+    {% if messages %}
+        <div class="transform-messages">
+
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                     role="alert">
+
+                    {{ message }}
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Fermer"></button>
+
+                </div>
+            {% endfor %}
+
+        </div>
+    {% endif %}
+
+    <!-- LISTE DES TRANSFORMATIONS -->
+    <div class="transform-card">
+
+        <div class="transform-card-header">
+
+            <h5>
+                <i class="bi bi-list-check me-2 text-success"></i>
+                Historique des transformations
+            </h5>
+
+            <span class="transform-count">
+                {{ transformations|length }} transformation(s)
+            </span>
+
+        </div>
+
+        {% if transformations %}
+
+            <div class="table-responsive">
+
+                <table class="table transform-table">
+
+                    <thead>
+                        <tr>
+                            <th>Produit final</th>
+                            <th>Quantité produite</th>
+                            <th>Date de transformation</th>
+                            <th>Statut</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for transformation in transformations %}
+
+                            <tr>
+
+                                <td>
+                                    <span class="transform-product">
+                                        {{ transformation.produit.nom }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="transform-quantity">
+                                        {{ transformation.quantite_produite }}
+                                    </span>
+
+                                    {{ transformation.produit.unite_mesure }}
+                                </td>
+
+                                <td>
+                                    <span class="transform-date">
+                                        {{ transformation.date_transformation|date:"d/m/Y H:i" }}
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    {% if transformation.statut == "TERMINEE" %}
+
+                                        <span class="transform-status status-finished">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            Terminée
+                                        </span>
+
+                                    {% elif transformation.statut == "ANNULEE" %}
+
+                                        <span class="transform-status status-cancelled">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                            Annulée
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="transform-status status-draft">
+                                            <i class="bi bi-pencil-square"></i>
+                                            Brouillon
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td class="text-center">
+
+                                    <a
+                                        href="{% url 'detail_transformation' transformation.id %}"
+                                        class="btn-transform-detail">
+
+                                        <i class="bi bi-eye"></i>
+                                        Voir le détail
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="transform-empty">
+
+                <div class="transform-empty-icon">
+                    <i class="bi bi-arrow-repeat"></i>
+                </div>
+
+                <h5>Aucune transformation enregistrée</h5>
+
+                <p class="mb-4">
+                    Les transformations que tu créeras apparaîtront ici.
+                </p>
+
+                <a href="{% url 'creer_transformation' %}"
+                   class="btn btn-success text-white">
+
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Créer une transformation
+
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

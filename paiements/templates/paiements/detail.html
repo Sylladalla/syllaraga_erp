@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}
+Détail du paiement
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+```
+<div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+
+        <h3>
+            💳 Paiement #{{ paiement.id }}
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+            Vente :
+            <strong>#{{ paiement.vente.id }}</strong>
+        </p>
+
+        <p>
+            Client :
+            <strong>{{ paiement.vente.client.nom }}</strong>
+        </p>
+
+        <p>
+            Montant :
+            <strong>{{ paiement.montant }} FCFA</strong>
+        </p>
+
+        <p>
+            Mode :
+            {{ paiement.get_mode_paiement_display }}
+        </p>
+
+        <p>
+            Statut :
+            <strong>{{ paiement.get_statut_display }}</strong>
+        </p>
+
+        <p>
+            Date :
+            {{ paiement.date_paiement }}
+        </p>
+
+        <hr>
+
+        <a href="{% url 'detail_vente' paiement.vente.id %}"
+           class="btn btn-primary">
+
+            ← Retour à la vente
+
+        </a>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

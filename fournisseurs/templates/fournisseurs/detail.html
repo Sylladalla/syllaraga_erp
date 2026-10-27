@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Détail fournisseur
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="container mt-4">
+
+
+<div class="card shadow">
+
+
+<div class="card-header bg-success text-white">
+
+<h3>
+👤 {{ fournisseur.nom }}
+</h3>
+
+</div>
+
+
+
+<div class="card-body">
+
+
+<h5>
+Informations fournisseur
+</h5>
+
+
+<p>
+<strong>Téléphone :</strong>
+{{ fournisseur.telephone }}
+</p>
+
+
+<p>
+<strong>Email :</strong>
+{{ fournisseur.email }}
+</p>
+
+
+<p>
+<strong>Adresse :</strong>
+{{ fournisseur.adresse }}
+</p>
+
+
+
+<hr>
+
+
+<h5>
+📦 Historique des achats
+</h5>
+
+
+
+<table class="table table-bordered table-hover">
+
+
+<thead class="table-success">
+
+<tr>
+
+<th>ID Achat</th>
+<th>Date</th>
+<th>Statut</th>
+<th>Montant</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+{% for achat in achats %}
+
+
+<tr>
+
+<td>
+
+<a href="{% url 'detail_achat' achat.id %}">
+
+Achat #{{ achat.id }}
+
+</a>
+
+</td>
+
+
+<td>
+{{ achat.date_achat }}
+</td>
+
+
+<td>
+
+{{ achat.get_statut_display }}
+
+</td>
+
+
+<td>
+
+{{ achat.montant_total }} FCFA
+
+</td>
+
+
+</tr>
+
+
+
+{% empty %}
+
+
+<tr>
+
+<td colspan="4">
+
+Aucun achat pour ce fournisseur
+
+</td>
+
+</tr>
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+
+<a href="{% url 'liste_fournisseurs' %}"
+class="btn btn-secondary">
+
+Retour
+
+</a>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+{% endblock %}

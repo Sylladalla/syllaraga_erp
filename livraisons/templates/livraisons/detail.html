@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}
+Détail de la livraison
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+
+<div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+
+        <h3>
+            🚚 Livraison #{{ livraison.id }}
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <p>
+            Vente :
+            <strong>
+                #{{ livraison.vente.id }}
+            </strong>
+        </p>
+
+        <p>
+            Client :
+            <strong>
+                {{ livraison.vente.client.nom }}
+            </strong>
+        </p>
+
+        <p>
+            Adresse :
+            {{ livraison.adresse_livraison }}
+        </p>
+
+        <p>
+            Zone :
+            {{ livraison.zone.nom }}
+        </p>
+
+        <p>
+            Frais de livraison :
+            <strong>
+                {{ livraison.zone.frais }} FCFA
+            </strong>
+        </p>
+
+        <p>
+            Livreur :
+            {{ livraison.livreur }}
+        </p>
+
+        <p>
+            Téléphone :
+            {{ livraison.telephone_livreur }}
+        </p>
+
+        <p>
+            Statut :
+            <strong>
+                {{ livraison.get_statut_display }}
+            </strong>
+        </p>
+
+        {% if livraison.date_livraison %}
+
+            <p>
+                Date de livraison :
+                {{ livraison.date_livraison }}
+            </p>
+
+        {% endif %}
+
+        <hr>
+        
+        <div class="mt-4">
+
+            {% if livraison.statut == "EN_PREPARATION" %}
+        
+                <div class="alert alert-warning">
+                    🟡 La commande est en préparation.
+                </div>
+        
+                <form method="POST"
+                      action="{% url 'demarrer_livraison' livraison.id %}">
+        
+                    {% csrf_token %}
+        
+                    <button type="submit"
+                            class="btn btn-primary">
+        
+                        🚚 Démarrer la livraison
+        
+                    </button>
+        
+                </form>
+        
+            {% endif %}
+        
+        
+            {% if livraison.statut == "EN_COURS" %}
+        
+                <div class="alert alert-info">
+                    🔵 La livraison est actuellement en cours.
+                </div>
+        
+                <form method="POST"
+                      action="{% url 'terminer_livraison' livraison.id %}"
+                      class="d-inline">
+        
+                    {% csrf_token %}
+        
+                    <button type="submit"
+                            class="btn btn-success">
+        
+                        ✅ Marquer comme livrée
+        
+                    </button>
+        
+                </form>
+        
+                <form method="POST"
+                      action="{% url 'annuler_livraison' livraison.id %}"
+                      class="d-inline">
+        
+                    {% csrf_token %}
+        
+                    <button type="submit"
+                            class="btn btn-danger">
+        
+                        ❌ Annuler
+        
+                    </button>
+        
+                </form>
+        
+            {% endif %}
+        
+        
+            {% if livraison.statut == "LIVREE" %}
+        
+                <div class="alert alert-success">
+        
+                    ✅ Livraison effectuée.
+        
+                    {% if livraison.date_livraison %}
+                        <br>
+                        Date :
+                        {{ livraison.date_livraison|date:"d/m/Y à H:i" }}
+                    {% endif %}
+        
+                </div>
+        
+            {% endif %}
+        
+        
+            {% if livraison.statut == "ANNULEE" %}
+        
+                <div class="alert alert-danger">
+        
+                    ❌ Livraison annulée.
+        
+                </div>
+        
+            {% endif %}
+        
+        </div>
+        
+
+        <a href="{% url 'gerer_livraison' livraison.vente.id %}"
+           class="btn btn-primary">
+
+            ✏️ Modifier la livraison
+
+        </a>
+
+        <a href="{% url 'detail_vente' livraison.vente.id %}"
+           class="btn btn-secondary">
+
+            ← Retour à la vente
+
+        </a>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}
