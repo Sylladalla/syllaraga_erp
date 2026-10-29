@@ -610,7 +610,7 @@
                         {% if ligne.produit.image %}
 
                             <img
-                                src="{{ ligne.produit.image.url }}"
+                                src="{% static ligne.produit.image.name %}"
                                 alt="{{ ligne.produit.nom }}"
                                 class="product-image"
                             >

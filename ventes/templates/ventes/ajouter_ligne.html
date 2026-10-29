@@ -1,3 +1,4 @@
+{% load static %}
 
 {% extends "base.html" %}
 
@@ -42,7 +43,7 @@ Ajouter un produit à la vente
 
                     {% if produit.image %}
 
-                        <img src="{{ produit.image.url }}"
+                        <img src="{% static produit.image.name %}"
                              class="card-img-top"
                              style="height: 160px; object-fit: cover;"
                              alt="{{ produit.nom }}">

@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'dashboard',
     'factures',
     'boutique',
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -193,3 +195,19 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Stockage des images des produits
+CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
+
+if CLOUDINARY_URL:
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+else:
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = BASE_DIR / "media"

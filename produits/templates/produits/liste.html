@@ -1,3 +1,4 @@
+{% load static %}
 
 {% extends "base.html" %}
 
@@ -300,7 +301,7 @@ Produits - Syllaraga ERP
                                     {% if produit.image %}
 
                                         <img
-                                            src="{{ produit.image.url }}"
+                                            src="{% static produit.image.name %}"
                                             alt="{{ produit.nom }}"
                                             style="
                                                 width:52px;

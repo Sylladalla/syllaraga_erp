@@ -9,3 +9,7 @@ requests
 PyYAML
 africastalking==2.0.3
 python-dotenv
+
+cloudinary==1.46.3
+django-cloudinary-storage==0.3.0
+six==1.17.0
